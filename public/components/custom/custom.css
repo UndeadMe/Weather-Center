@@ -1,0 +1,15 @@
+:root {
+    /* dark */
+    --dark: #070707;
+    --minimal-dark: #333C44;
+    
+    /* green */
+    --dark-green: #3B5A52;
+    --minimal-green: #178A64;
+    --light-green: #14CD59;
+
+    /* white */
+    --ice-white: #EDF4F5;
+    --minimal-white: #E4E4E4;
+    --gray: #7D7D7D;
+}
