@@ -1,0 +1,19 @@
+{
+  "name": "weather-center",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Banana021s/Weather-Center.git"
+  },
+  "author": "Arash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Banana021s/Weather-Center/issues"
+  },
+  "homepage": "https://github.com/Banana021s/Weather-Center#readme"
+}
