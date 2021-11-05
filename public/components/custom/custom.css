@@ -7,9 +7,17 @@
     --dark-green: #3B5A52;
     --minimal-green: #178A64;
     --light-green: #14CD59;
+    --aside-activate: #005c07;
 
     /* white */
+    --white : #FFFFFF;
     --ice-white: #EDF4F5;
     --minimal-white: #E4E4E4;
     --gray: #7D7D7D;
+
+    /* gradient */
+    --aside-gradient: linear-gradient(to bottom, var(--minimal-green) 10%, #0C4532 50%);
+
+    /* shadow */
+    --minimal-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
 }
