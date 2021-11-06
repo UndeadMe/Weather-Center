@@ -15,9 +15,16 @@
     --minimal-white: #E4E4E4;
     --gray: #7D7D7D;
 
-    /* gradient */
+    /* gradients */
     --aside-gradient: linear-gradient(to bottom, var(--minimal-green) 10%, #0C4532 50%);
 
-    /* shadow */
+    /* shadows */
     --minimal-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
+
+    /* margins */
+    --ms-69: 69px;
+}
+
+.ms-69 {
+    margin-left: var(--ms-69) !important;
 }
