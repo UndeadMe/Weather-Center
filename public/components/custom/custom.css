@@ -13,7 +13,7 @@
     --white : #FFFFFF;
     --ice-white: #EDF4F5;
     --minimal-white: #E4E4E4;
-    --gray: #7D7D7D;
+    --gray: #868686;
 
     /* gradients */
     --aside-gradient: linear-gradient(to bottom, var(--minimal-green) 10%, #0C4532 50%);
@@ -23,6 +23,9 @@
 
     /* margins */
     --ms-69: 69px;
+
+    /* rgba */
+    --header-after : rgba(0, 0, 0, 0.35);
 }
 
 .ms-69 {

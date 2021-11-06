@@ -8,9 +8,51 @@ body {
 .header {
     width: 100%;
     height: 500px;
-    padding: 15px 20px;
+    padding: 15px 20px 50px 20px;
+    position: relative;
 }
-
+.header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../img/header/sunny.jpg);
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: -1;
+}
+.header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--header-after);
+    z-index: -1;
+}
+.header-question {
+    font-size: 3.8rem;
+    color: var(--ice-white);
+}
+.header-hello-user {
+    font-size: 2.5rem;
+    color: var(--ice-white);
+}
+.header-date {
+    color: var(--gray);
+}
+.header-mouse {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--white);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
 /* ! --------------------------------- navbar --------------------------------- ! */
 .navbar-brand {
     font-size: 2rem;
