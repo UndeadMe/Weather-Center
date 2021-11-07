@@ -127,4 +127,9 @@ body {
     font-size: 1.2rem;
     background: var(--button-gradient);
     color: var(--ice-white);
+    transition: 0.3s;
+    box-shadow:  var(--search-btn-shadow);
+}
+.search-group + button:active {
+    box-shadow: var(--search-btn-active-shadow);
 }
