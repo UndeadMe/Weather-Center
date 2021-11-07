@@ -93,6 +93,7 @@ body {
 .main {
     padding: 20px;
 }
+/* ! ------------------------------- main header ------------------------------ ! */
 .main-header-title {
     color: var(--white);
     text-transform: capitalize;
@@ -125,11 +126,29 @@ body {
     border: 1px solid var(--gray);
     border-radius: 5px;
     font-size: 1.2rem;
-    background: var(--button-gradient);
+    background: var(--search-btn);
     color: var(--ice-white);
     transition: 0.3s;
     box-shadow:  var(--search-btn-shadow);
 }
 .search-group + button:active {
+    box-shadow: var(--search-btn-active-shadow);
+}
+/* ! ------------------------------ city section ------------------------------ ! */
+.city-section {
+    margin-top: 60px;
+}
+.city-section-title {
+    color: var(--white);
+}
+.show-cities-btn, .chart-btn {
+    border: 1px solid var(--gray);
+    background: var(--button-gradient);
+    border-radius: 5px;
+    padding: 5px 20px;
+    color: var(--ice-white);
+    font-size: 1.2rem;
+}
+.show-cities-btn:active, .chart-btn:active {
     box-shadow: var(--search-btn-active-shadow);
 }
