@@ -55,7 +55,7 @@ body {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    color: var(--white);
+    color: var(--ice-white);
     font-size: 1.5rem;
     cursor: pointer;
 }
@@ -116,7 +116,7 @@ body {
     background: none !important;
     border: none;
     box-shadow: none !important;
-    color: var(--white) !important;
+    color: var(--ice-white) !important;
 }
 .search-group input::placeholder {
     color: var(--gray);
@@ -126,7 +126,7 @@ body {
     border: 1px solid var(--gray);
     border-radius: 5px;
     font-size: 1.2rem;
-    background: var(--search-btn);
+    background: var(--search-btn-gradient);
     color: var(--ice-white);
     transition: 0.3s;
     box-shadow:  var(--search-btn-shadow);
@@ -139,7 +139,7 @@ body {
     margin-top: 60px;
 }
 .city-section-title {
-    color: var(--white);
+    color: var(--ice-white);
 }
 .show-cities-btn, .chart-btn {
     border: 1px solid var(--gray);
@@ -150,5 +150,39 @@ body {
     font-size: 1.2rem;
 }
 .show-cities-btn:active, .chart-btn:active {
+    box-shadow: var(--search-btn-active-shadow);
+}
+/* ! ------------------------------ weather week ------------------------------ ! */
+.weather-titles, .weather-data {
+    color: var(--ice-white);
+}
+/* ! ---------------------------- weather today box --------------------------- ! */
+.weather-today-box-inner {
+    background: var(--weather-today-box-gradient);
+    border-radius: 25px;
+    padding: 10px 25px;
+}
+.weather-today-today {
+    color: var(--dark-green);
+    font-weight: bolder;
+}
+.weather-today-day {
+    font-weight: bolder;
+}
+.weather-today-gps, .weather-today-date, .weather-today-temp, .weather-today-day {
+    color: var(--ice-white);
+}
+.calender-btn {
+    border-radius: 17px;
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    color: var(--ice-white);
+    background: var(--calender-btn-gradient);
+    color: var(--dark-black);
+    font-weight: bolder;
+    font-size: 1.3rem;
+}
+.calender-btn:active {
     box-shadow: var(--search-btn-active-shadow);
 }
