@@ -99,7 +99,7 @@ body {
 }
 .search-group {
     border-radius: 5px;
-    box-shadow: var(--search-group);
+    box-shadow: var(--search-group-shadow);
     border: 1px solid var(--gray);
     background: var(--dark-green) !important;
     margin-right: 20px;
