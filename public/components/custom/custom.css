@@ -19,9 +19,12 @@
 
     /* gradients */
     --aside-gradient: linear-gradient(to bottom, var(--minimal-green) 10%, #0C4532 50%);
-
+    --home-gradient : linear-gradient(to right bottom, var(--dark) 50%, #292929 100%);
+    --button-gradient: linear-gradient(to bottom, var(--dark-green), var(--minimal-dark) 100%);
+    
     /* shadows */
     --minimal-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
+    /* --search-group-shadow:  */
 
     /* margins */
     --ms-69: 69px;

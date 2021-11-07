@@ -1,9 +1,15 @@
 @import url(../../components/aside/aside.css);
 
 body {
+    background: var(--home-gradient) !important;
     display: flex;
 }
-
+/* ! ---------------------------------- wrap ---------------------------------- !! */
+.wrap {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
 /* ! --------------------------------- header --------------------------------- */
 .header {
     width: 100%;
@@ -74,9 +80,51 @@ body {
 .nav-item {
     font-size: 2rem;
 }
+.nav-item:not(:first-child, .nav-item:nth-child(2)) {
+    margin-top: -1px;
+}
 .navbar-hour, .navbar-nav .nav-item:nth-child(2) span {
     color: var(--minimal-dark) !important;
 }
 .navbar-nav .nav-item:last-child {
     cursor: pointer;
+}
+/* ! ---------------------------------- main ---------------------------------- ! */
+.main {
+    padding: 20px;
+}
+.main-header-title {
+    color: var(--white);
+    text-transform: capitalize;
+}
+.search-group {
+    border-radius: 5px;
+    box-shadow: var(--search-group);
+    border: 1px solid var(--gray);
+    background: var(--dark-green) !important;
+    margin-right: 20px;
+    width: 300px;
+    padding: 1px 5px;
+}
+.search-group span {
+    background: none !important;
+    color: var(--ice-white);
+    border: none;
+}
+.search-group input {
+    background: none !important;
+    border: none;
+    box-shadow: none !important;
+    color: var(--white) !important;
+}
+.search-group input::placeholder {
+    color: var(--gray);
+}
+.search-group + button {
+    padding: 5px 25px;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    font-size: 1.2rem;
+    background: var(--button-gradient);
+    color: var(--ice-white);
 }
