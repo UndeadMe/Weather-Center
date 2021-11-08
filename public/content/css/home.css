@@ -63,6 +63,7 @@ body {
 .navbar-brand {
     font-size: 2rem;
     text-transform: capitalize;
+    color: var(--minimal-dark);
 }
 .navbar-brand span:first-child {
     color: var(--white);

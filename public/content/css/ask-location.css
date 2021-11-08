@@ -1,0 +1,44 @@
+@import url(../../components/custom/custom.css);
+body {
+    height: 100vh;
+    background: linear-gradient(to right top, var(--dark), var(--minimal-dark));
+    display: flex;
+    align-items: center;
+}
+.weather-center {
+    font-size: 4rem;
+    color: var(--minimal-green);
+}
+.weather-center span:first-child {
+    color: var(--white);
+}
+.weather-center span:nth-child(2) {
+    font-weight: lighter;
+}
+.weather-center span:nth-child(3) {
+    color: var(--white);
+}
+.weather-center span:last-child {
+    font-weight: lighter;
+}
+.gps-msg {
+    color: var(--ice-white);
+    font-size: 1.2rem;
+}
+.gps-msg span {
+    color: var(--gray);
+}
+.allow-my-location {
+    position: relative;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    padding: 10px 25px;
+    background: var(--button-gradient);
+    border: none;
+    color: var(--ice-white);
+    box-shadow: var(--minimal-shadow);
+    transition: 0.3s;
+}
+.allow-my-location:hover {
+    filter: brightness(0.9);
+}
