@@ -77,17 +77,21 @@ body {
     font-weight: lighter;
 }
 /* ! ------------------------------- navbar menu ------------------------------ ! */
-.nav-item {
+.navbar-nav .nav-item {
     font-size: 2rem;
 }
-.nav-item:not(:first-child, .nav-item:nth-child(2)) {
+.navbar-nav .nav-item:not(:first-child, .nav-item:nth-child(2)) {
     margin-top: -1px;
 }
 .navbar-hour, .navbar-nav .nav-item:nth-child(2) span {
     color: var(--minimal-dark) !important;
 }
+.navbar-nav .nav-item:nth-child(3) , .navbar-nav .nav-item:nth-child(4) {
+    fill: var(--minimal-dark);
+}
 .navbar-nav .nav-item:last-child {
     cursor: pointer;
+    fill: var(--minimal-dark);
 }
 /* ! ---------------------------------- main ---------------------------------- ! */
 .main {
@@ -145,16 +149,33 @@ body {
     border: 1px solid var(--gray);
     background: var(--button-gradient);
     border-radius: 5px;
-    padding: 5px 20px;
     color: var(--ice-white);
+    fill: var(--ice-white);
     font-size: 1.2rem;
+}
+.show-cities-btn {
+    padding: 5px 20px;
+}
+.chart-btn {
+    padding: 5px 30px;
 }
 .show-cities-btn:active, .chart-btn:active {
     box-shadow: var(--search-btn-active-shadow);
 }
 /* ! ------------------------------ weather week ------------------------------ ! */
-.weather-titles, .weather-data {
+.weather-titles, .weather-data, .weather-data-dots {
     color: var(--ice-white);
+}
+.weather-data-dots {
+    font-size: 2rem;
+    cursor: pointer;
+}
+.weather-data-C {
+    width: 7px;
+    height: 7px;
+    border: 2px solid var(--ice-white);
+    border-radius: 10px;
+    margin-left: 3px;
 }
 /* ! ---------------------------- weather today box --------------------------- ! */
 .weather-today-box-inner {
@@ -184,5 +205,5 @@ body {
     font-size: 1.3rem;
 }
 .calender-btn:active {
-    box-shadow: var(--search-btn-active-shadow);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.9);
 }

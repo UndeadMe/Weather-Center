@@ -27,14 +27,25 @@
     margin-top: 15px;
 }
 .aside-list a {
-    color: var(--white);    
+    color: var(--white);
+    fill: var(--white);
 }
 .aside-list.active {
     background: var(--white);
-    padding: 8px 11px 10px 11px;
-    border-radius: 10px;
+    padding: 8px 11px;
+    border-radius: 12px;
     box-shadow: var(--minimal-shadow);
+}
+.aside-list.active a {
     fill: var(--aside-activate);
+    color: var(--aside-activate);
+}
+.aside-list.active:first-child {
+    padding: 8px 12px 10px 12px;
+}
+.aside-list.active:not(:first-child) {
+    margin-top: 10px;
+    font-size: 1.3rem;
 }
 .aside-bottom {
     position: absolute;
