@@ -104,12 +104,12 @@ body {
     text-transform: capitalize;
 }
 .search-group {
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: var(--search-group-shadow);
-    border: 1px solid var(--gray);
+    border: 1px solid var(--border-button);
     background: var(--dark-green) !important;
     margin-right: 20px;
-    width: 300px;
+    width: 400px;
     padding: 1px 5px;
 }
 .search-group span {
@@ -121,16 +121,19 @@ body {
     background: none !important;
     border: none;
     box-shadow: none !important;
+    height: 40px;
     color: var(--ice-white) !important;
 }
 .search-group input::placeholder {
     color: var(--gray);
+    text-transform: capitalize;
 }
 .search-group + button {
     padding: 5px 25px;
-    border: 1px solid var(--gray);
-    border-radius: 5px;
-    font-size: 1.2rem;
+    height: 45px;
+    border: 1px solid var(--border-button);
+    border-radius: 8px;
+    font-size: 1.3rem;
     background: var(--search-btn-gradient);
     color: var(--ice-white);
     transition: 0.3s;
@@ -147,18 +150,21 @@ body {
     color: var(--ice-white);
 }
 .show-cities-btn, .chart-btn {
-    border: 1px solid var(--gray);
+    border: 1px solid var(--border-button);
     background: var(--button-gradient);
-    border-radius: 5px;
     color: var(--ice-white);
     fill: var(--ice-white);
     font-size: 1.2rem;
+    height: 50px;
 }
 .show-cities-btn {
-    padding: 5px 20px;
+    padding: 5px 30px;
+    border-radius: 10px;
 }
 .chart-btn {
-    padding: 5px 30px;
+    width: 50px;
+    border-radius: 12px;
+    font-size: 1.5rem;
 }
 .show-cities-btn:active, .chart-btn:active {
     box-shadow: var(--search-btn-active-shadow);

@@ -6,9 +6,14 @@ const gpsMsg = document.querySelector(".gps-msg")
 const geolocationReq = () => {    
     navigator.geolocation.getCurrentPosition(
         (position) => {
+            //* set geolocation of user in localStorage
+            localStorage.setItem("Geolocation", JSON.stringify({
+                lat: position.coords.latitude,
+                lon: position.coords.longitude
+            }))
             //* go to the home page and send the geo info
-            location.replace(`home.html?lat=${position.coords.latitude}&long=${position.coords.longitude}`)
-        }, 
+            location.replace(`home.html`)
+        },
         (err) => {
             //* stop loading
             loading(false)

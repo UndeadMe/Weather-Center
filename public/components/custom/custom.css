@@ -17,13 +17,13 @@
     --ice-white: #EDF4F5;
     --minimal-white: #E4E4E4;
     --gray: #bbbbbb;
-    /* --gray: #868686; */
+    --border-button: #868686;
 
     /* gradients */
     --aside-gradient: linear-gradient(to bottom, var(--minimal-green) 10%, #0C4532 50%);
     --home-gradient : linear-gradient(to right bottom, var(--dark) 50%, #292929 100%);
     --button-gradient: linear-gradient(to bottom, var(--dark-green), var(--minimal-dark) 100%);
-    --search-btn-gradient: linear-gradient(to bottom, var(--dark-green), var(--light-green) 100%);
+    --search-btn-gradient: linear-gradient(to bottom, var(--dark-green), var(--light-green) 200%);
     --weather-today-box-gradient: linear-gradient(to left bottom, #00FFA1, #0F7D17 100%);
     --calender-btn-gradient: linear-gradient(to bottom, #02F091, #0F821C 100%);
 
