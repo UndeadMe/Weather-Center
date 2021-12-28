@@ -3,9 +3,9 @@ const loadingElem = document.querySelector(".loading")
 const gpsMsg = document.querySelector(".gps-msg")
 
 //* request to user for allow location 
-const geolocationReq = () => {    
+const geolocationReq = () => {
     navigator.geolocation.getCurrentPosition(
-        (position) => {
+        position => {
             //* set geolocation of user in localStorage
             localStorage.setItem("Geolocation", JSON.stringify({
                 lat: position.coords.latitude,
@@ -14,17 +14,17 @@ const geolocationReq = () => {
             //* go to the home page and send the geo info
             location.replace(`home.html`)
         },
-        (err) => {
+        err => {
             //* stop loading
             loading(false)
+            console.log(err)
         }
     )
 }
 
 //* start loading or stop loading
 const loading = (bool) => {
-    if (bool) loadingElem.classList.add("active")
-    else loadingElem.classList.remove("active")
+    bool ? loadingElem.classList.add("active") : loadingElem.classList.remove("active")
 }
 
 window.addEventListener("load", () => {

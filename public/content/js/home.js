@@ -45,39 +45,31 @@ const createWeatherDataBox = (weatherResponse) => {
 //* create date
 const createDate = () => {
     const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
     const nowDate = new Date()
     const yearNumber  = nowDate.getFullYear()
     const monthName = monthNames[nowDate.getMonth()]
-    const dayName = dayNames[nowDate.getDay()]
+    const dayName = createDayName(nowDate.getDay())
     let dayNumber = nowDate.getDate()
 
     //* if day number for example is 9 --> put 0 in before 9 like 09
-    if (dayNumber.toString().length === 1) {
-        dayNumber = `0${dayNumber}`
-    }
+    if (dayNumber.toString().length === 1) dayNumber = `0${dayNumber}`
 
     return `${dayName}, ${dayNumber} ${monthName} ${yearNumber}`
 }
 
 //* create dayName based api day index
-const createDayName = (dayDate) => {
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    return dayNames[dayDate]
-}
+const createDayName = (dayDate) => { return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayDate] }
 
 //* create time
-const createTime = () => {
+const clock = () => {
     setInterval(() => {
         let time
         const nowTime = new Date()
         const hour = nowTime.getHours()
         let minut = nowTime.getMinutes()
 
-        if (minut.toString().trim().length === 1) {
-            minut = `0${minut}`
-        }
+        if (minut.toString().trim().length === 1) minut = `0${minut}`
         
         hour >= 12 && hour <= 24 ? time = `${hour}:${minut} PM` : time = `${hour}:${minut} AM`
 
@@ -92,5 +84,5 @@ window.addEventListener("load", () => {
     //* create date, time and put them in some elements
     headerDate.innerHTML = createDate()
     weatherTodayDate.innerHTML = `<i class="bi bi-calendar2 me-1"></i>  ${createDate()}`
-    createTime()
+    clock()
 })
