@@ -172,6 +172,14 @@ body {
     box-shadow: var(--search-btn-active-shadow);
 }
 /* ! ------------------------------ weather week ------------------------------ ! */
+.city-data-wrap {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 40px;
+}
+.city-weather-week-wrap {
+    width: 100%;
+}
 .weather-titles, .weather-data, .weather-data-dots {
     color: var(--ice-white);
 }
@@ -187,10 +195,18 @@ body {
     margin-left: 3px;
 }
 /* ! ---------------------------- weather today box --------------------------- ! */
+.weather-today-box {
+    width: 450px;
+}
 .weather-today-box-inner {
+    width: 100%;
+    height: 400px;
     background: var(--weather-today-box-gradient);
     border-radius: 25px;
     padding: 10px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .weather-today-today {
     color: var(--dark-green);
