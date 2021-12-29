@@ -4,6 +4,10 @@ body {
     background: var(--home-gradient) !important;
     display: flex;
 }
+.container-css {
+    width: 100%;
+    max-width: 1920px;
+}
 /* ! ---------------------------------- wrap ---------------------------------- !! */
 .wrap {
     display: flex;
