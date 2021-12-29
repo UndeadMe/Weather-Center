@@ -148,9 +148,6 @@ body {
     box-shadow: var(--search-btn-active-shadow);
 }
 /* ! ------------------------------ city section ------------------------------ ! */
-.city-section {
-    margin-top: 60px;
-}
 .city-section-title {
     color: var(--ice-white);
 }
