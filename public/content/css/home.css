@@ -198,6 +198,7 @@ body {
     width: 100%;
     display: flex;
     color: var(--ice-white);
+    margin-bottom: 30px;
 }
 .weather-week-headings > * {
     width: 100%;
@@ -209,14 +210,26 @@ body {
 .weather-week {
     width: 100%;
     display: flex;
+    align-items: center;
     margin-top: 20px;
+    height: 50px;
+}
+.weather-week.active {
+    background: var(--weather-box-gradient);
+    padding: 0 20px;
+    border-radius: 8px;
+}
+.weather-week.active > * {
+    color: var(--ice-white);
 }
 .weather-week > * {
     width: 100%;
     color: var(--light-green);
+    font-size: 1.4rem;
 }
 .weather-week h3:last-child {
     text-align: center;
+    font-size: 3rem;
 }
 .more-info-span {
     cursor: pointer;

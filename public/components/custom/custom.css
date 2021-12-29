@@ -26,6 +26,7 @@
     --search-btn-gradient: linear-gradient(to bottom, var(--dark-green), var(--light-green) 200%);
     --weather-today-box-gradient: linear-gradient(to left bottom, #00FFA1, #0F7D17 100%);
     --calender-btn-gradient: linear-gradient(to bottom, #02F091, #0F821C 100%);
+    --weather-box-gradient: linear-gradient(to bottom, #00AD28, #005714);
 
     /* shadows */
     --minimal-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
