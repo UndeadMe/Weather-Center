@@ -2,6 +2,7 @@
 
 body {
     background: var(--home-gradient) !important;
+    min-height: 100vh;
     display: flex;
 }
 .container-css {
