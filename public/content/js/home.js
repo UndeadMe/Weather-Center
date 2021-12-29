@@ -1,3 +1,5 @@
+const wrap = document.querySelector(".city-weather-week-wrap")
+
 //? get elements
 const headerDate = document.querySelector(".header-date")
 const headerTime = document.querySelector(".navbar-hour")
@@ -19,27 +21,44 @@ const getLocationOfUserFromUrl = () => {
 //* main function --> this function calls to all of the functions we need to call for upload weather datas //FIXME
 const weatherCenter = () => {
     const { lat, lon } = getLocationOfUserFromUrl()
-    requestToOneCallApi({ lat, lon })
+    const weatherDatas = requestToOneCallApi({ lat, lon })
+    
+    const Fragment = new DocumentFragment()
+    
+    weatherDatas
+        .then(res => {
+            res.daily.forEach(dayObject => Fragment.appendChild(createWeatherDataBox(dayObject)))
+            wrap.appendChild(Fragment)
+        })
+        .catch(console.error)
 }
 
 //* request to one call api //FIXME
-const requestToOneCallApi = ({ lat, lon }) => {
-    const EXCLUDE = "daily"
+const requestToOneCallApi = async ({ lat, lon }) => {
+    const EXCLUDE = "hourly,minutely,current"
     const API_KEY = "af18dfbb2d163485e7669b46fb2f7c76"
     const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}&exclude=${EXCLUDE}`
     
     //? request to api
-    fetch(API)
-        .then(response => {
-            if (!response.ok) throw new Error("err")
-            return response.json()
-        })
-        .then(response => console.log(response))
-        .catch(err => console.log(err))
+    const responses = await fetch(API)
+    if (responses.status === 200 && responses.ok) return await responses.json()
+    else throw new Error("Error!")
 }
 
+//* create weather data box
 const createWeatherDataBox = (weatherResponse) => {
-    const wrap = document.querySelector(".weather-week")
+    const children_element_of_weather_box = 
+    `<h3 class="p-0 m-0">Sunday</h3>
+    <h3 class="p-0 m-0">17°C</h3>
+    <h3 class="p-0 m-0">55% <i class="bi bi-droplet"></i></h3>
+    <h3 class="p-0 m-0">300hPa</h3>
+    <h3 class="p-0 m-0"><span class="more-info-span"><i class="bi bi-three-dots"></i></span></h3>`
+    
+    const weather_box = document.createElement("div")
+    weather_box.classList.add("weather-week")
+    weather_box.insertAdjacentHTML("beforeend", children_element_of_weather_box)
+    
+    return weather_box
 }
 
 //* create date
