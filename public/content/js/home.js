@@ -23,14 +23,16 @@ const weatherCenter = () => {
     const { lat, lon } = getLocationOfUserFromUrl()
     const weatherDatas = requestToOneCallApi({ lat, lon })
     
+    wrap.innerHTML = ""
     const Fragment = new DocumentFragment()
     
+
     weatherDatas
-        .then(res => {
-            res.daily.forEach(dayObject => Fragment.appendChild(createWeatherDataBox(dayObject)))
-            wrap.appendChild(Fragment)
-        })
-        .catch(console.error)
+    .then(res => {
+        res.daily.forEach(dayObject => Fragment.appendChild(createWeatherDataBox(dayObject)))
+        wrap.appendChild(Fragment)
+    })
+    .catch(console.error)
 }
 
 //* request to one call api //FIXME
@@ -47,11 +49,16 @@ const requestToOneCallApi = async ({ lat, lon }) => {
 
 //* create weather data box
 const createWeatherDataBox = (weatherResponse) => {
-    const children_element_of_weather_box = 
-    `<h3 class="p-0 m-0">Sunday</h3>
-    <h3 class="p-0 m-0">17°C</h3>
-    <h3 class="p-0 m-0">55% <i class="bi bi-droplet"></i></h3>
-    <h3 class="p-0 m-0">300hPa</h3>
+    const day = createDays(weatherResponse.dt)
+    const humidity = weatherResponse.humidity
+    const min_temp = weatherResponse.temp.min
+    const pressure = weatherResponse.pressure
+
+    const children_element_of_weather_box =
+    `<h3 class="p-0 m-0">${day}</h3>
+    <h3 class="p-0 m-0">${min_temp}k</h3>
+    <h3 class="p-0 m-0">${humidity}% <i class="bi bi-droplet"></i></h3>
+    <h3 class="p-0 m-0">${pressure}Pa</h3>
     <h3 class="p-0 m-0"><span class="more-info-span"><i class="bi bi-three-dots"></i></span></h3>`
     
     const weather_box = document.createElement("div")
@@ -77,8 +84,17 @@ const createDate = () => {
     return `${dayName}, ${dayNumber} ${monthName} ${yearNumber}`
 }
 
-//* create dayName based api day index
+//* create Day Name by number of day
 const createDayName = (dayDate) => { return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayDate] }
+
+//? create Day Name by time of forecasted data
+const createDays = (dt) => {
+    const date = new Date(dt * 1000)
+    const numberOfDay = date.getDay()
+    const dayName = createDayName(numberOfDay)
+
+    return dayName
+}
 
 //* create time
 const clock = () => {
