@@ -17,7 +17,7 @@ const geolocationReq = () => {
         err => {
             //* stop loading
             loading(false)
-            console.log(err)
+            returnGeoErr(err.code)
         }
     )
 }
@@ -27,9 +27,25 @@ const loading = (bool) => {
     bool ? loadingElem.classList.add("active") : loadingElem.classList.remove("active")
 }
 
+//? return geolocation err for users
+const returnGeoErr = (err) => {
+    gpsMsg.classList.add("gps-msg-err")
+    switch (err) {
+        case 1: 
+            gpsMsg.innerHTML = "The acquisition of the geolocation information failed because the page didn't have the permission to do it."
+            break
+        case 2:
+            gpsMsg.innerHTML = "The acquisition of the geolocation failed <br> try again!"
+            break
+        case 3: 
+            gpsMsg.innerHTML = "something went wrong <br> try agian!"
+            break
+    }
+}
+
 window.addEventListener("load", () => {
     //* check browser is support geolocation
-    if ("geolocation" in navigator) {
+    if (navigator.geolocation) {
         locationBtn.addEventListener("click", () => {
             //* show loading
             loading(true)
