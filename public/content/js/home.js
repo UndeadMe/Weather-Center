@@ -1,10 +1,10 @@
-const wrap = document.querySelector(".city-weather-week-wrap")
 
 //? get elements
 const headerDate = document.querySelector(".header-date")
 const headerTime = document.querySelector(".navbar-hour")
 const weatherTodayGps = document.querySelector(".weather-today-gps")
 const weatherTodayDate = document.querySelector(".weather-today-date")
+const wrap = document.querySelector(".city-weather-week-wrap")
 
 //* get location of user from url (lat and )
 const getLocationOfUserFromUrl = () => {
@@ -18,14 +18,12 @@ const getLocationOfUserFromUrl = () => {
         location.replace("ask-location.html")
 }
 
-//* main function --> this function calls to all of the functions we need to call for upload weather datas //FIXME
-const weatherCenter = () => {
-    const { lat, lon } = getLocationOfUserFromUrl()
-    const weatherDatas = requestToOneCallApi({ lat, lon })
+//* upload weather boxes --> this function calls to all of the functions we need to call for upload weather datas
+const uploadWeatherBoxInDom = ({ lat, lon }) => {
+    const weatherDatas = getWeatherResponse({ lat, lon })
     
     wrap.innerHTML = ""
     const Fragment = new DocumentFragment()
-    
 
     weatherDatas
     .then(res => {
@@ -35,16 +33,21 @@ const weatherCenter = () => {
     .catch(console.error)
 }
 
-//* request to one call api //FIXME
-const requestToOneCallApi = async ({ lat, lon }) => {
+//? send request and return response
+const makeRequest = (url) => {
+    return fetch(url)
+            .then(res => { if (res.ok) { return res.json() } })
+}
+
+//* request to one call api
+const getWeatherResponse = ({ lat, lon }) => {
+    //? API Setting
     const EXCLUDE = "hourly,minutely,current"
     const API_KEY = "af18dfbb2d163485e7669b46fb2f7c76"
     const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}&exclude=${EXCLUDE}`
     
     //? request to api
-    const responses = await fetch(API)
-    if (responses.status === 200 && responses.ok) return await responses.json()
-    else throw new Error("Error!")
+    return makeRequest(API)
 }
 
 //* create weather data box
@@ -115,7 +118,7 @@ const clock = () => {
 //* call to some functions to do something
 window.addEventListener("load", () => {
     //* create weather boxes
-    weatherCenter()
+    uploadWeatherBoxInDom(getLocationOfUserFromUrl())
     //* create date, time and put them in some elements
     headerDate.innerHTML = createDate()
     weatherTodayDate.innerHTML = `<i class="bi bi-calendar2 me-1"></i>  ${createDate()}`
