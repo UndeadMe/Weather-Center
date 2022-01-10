@@ -13,6 +13,8 @@ const geolocationReq = () => {
             .then(data => {
                 //* set geolocation of user in localStorage
                 localStorage.setItem("Geolocation", JSON.stringify({
+                    country: data.country,
+                    city: data.city,
                     lat: data.latt,
                     lon: data.longt
                 }))

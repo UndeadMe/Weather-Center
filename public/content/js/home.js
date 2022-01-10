@@ -4,16 +4,17 @@ const headerDate = document.querySelector(".header-date")
 const headerTime = document.querySelector(".navbar-hour")
 const weatherTodayGps = document.querySelector(".weather-today-gps")
 const weatherTodayDate = document.querySelector(".weather-today-date")
-const wrap = document.querySelector(".city-weather-week-wrap")
+const wrap = document.querySelector(".weather-wrap")
+const searchCityInput = document.getElementById("search-city-input")
 
 //* get location of user from url (lat and )
 const getLocationOfUserFromUrl = () => {
-    //* take lat and lon from url and put the in array
-    const lat_lon = JSON.parse(localStorage.getItem("Geolocation"))
+    //* take lat and lon from localStorage
+    const GeolocationOfUser = JSON.parse(localStorage.getItem("Geolocation"))
     
     //* check user gave his access of geo or no
-    if (lat_lon) {
-        return { lat, lon } = lat_lon
+    if (GeolocationOfUser) {
+        return { lat, lon } = GeolocationOfUser
     } else 
         location.replace("ask-location.html")
 }
@@ -27,7 +28,11 @@ const uploadWeatherBoxInDom = ({ lat, lon }) => {
 
     weatherDatas
     .then(res => {
-        res.daily.forEach(dayObject => Fragment.appendChild(createWeatherDataBox(dayObject)))
+        res.daily.forEach( (dayObject, dayIndex) => {
+            //* don't appendChild last object and don't create weather data box for that
+            if (dayIndex !== res.daily.length - 1)
+                Fragment.appendChild(createWeatherDataBox(dayObject))
+        })
         wrap.appendChild(Fragment)
     })
     .catch(console.error)
@@ -115,12 +120,40 @@ const clock = () => {
     }, 1000)
 }
 
+//* get city and country of user
+const getCountry_CityUser = () => {
+    //* take lat and lon from localStorage
+    const { country, city } = JSON.parse(localStorage.getItem("Geolocation"))
+
+    //* check county and city of user arn't null or undefined
+    if (country && city)
+        return { country, city }
+}
+
+//* put city and country in dom
+const putCountry_CityInDom = () => {
+    const cityElem = document.querySelector(".city-section-title")
+    const { country, city } = getCountry_CityUser()
+    cityElem.innerHTML = `${country} - ${city}`
+}
+
 //* call to some functions to do something
 window.addEventListener("load", () => {
     //* create weather boxes
     uploadWeatherBoxInDom(getLocationOfUserFromUrl())
+    
     //* create date, time and put them in some elements
     headerDate.innerHTML = createDate()
+
+    //* put data in weather today box
     weatherTodayDate.innerHTML = `<i class="bi bi-calendar2 me-1"></i>  ${createDate()}`
+
+    //* put Country and city names in dom
+    putCountry_CityInDom()
+
+    //* put city name in value of search input
+    searchCityInput.value = getCountry_CityUser().city
+
+    //* start interval
     clock()
 })
