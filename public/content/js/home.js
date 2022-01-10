@@ -6,22 +6,24 @@ const weatherTodayGps = document.querySelector(".weather-today-gps")
 const weatherTodayDate = document.querySelector(".weather-today-date")
 const wrap = document.querySelector(".weather-wrap")
 const searchCityInput = document.getElementById("search-city-input")
+const searchCityBtn = document.getElementById("search-city-btn")
 
 //* get location of user from url (lat and )
-const getLocationOfUserFromUrl = () => {
-    //* take lat and lon from localStorage
-    const GeolocationOfUser = JSON.parse(localStorage.getItem("Geolocation"))
-    
-    //* check user gave his access of geo or no
-    if (GeolocationOfUser) {
-        return { lat, lon } = GeolocationOfUser
+const getLocationOfUserFromLocalStorage = () => {
+    //* take latt and longt from localStorage
+    const { latt, longt } = JSON.parse(localStorage.getItem("Geolocation"))
+
+    //* check latt and longt aren't undefined or null
+    if (latt && longt) {
+        return { latt, longt }
     } else 
         location.replace("ask-location.html")
 }
 
 //* upload weather boxes --> this function calls to all of the functions we need to call for upload weather datas
-const uploadWeatherBoxInDom = ({ lat, lon }) => {
-    const weatherDatas = getWeatherResponse({ lat, lon })
+const uploadWeatherBoxInDom = (latt_longt_object) => {
+    const { latt, longt } = latt_longt_object
+    const weatherDatas = getWeatherResponse(latt, longt)
     
     wrap.innerHTML = ""
     const Fragment = new DocumentFragment()
@@ -41,17 +43,17 @@ const uploadWeatherBoxInDom = ({ lat, lon }) => {
 //? send request and return response
 const makeRequest = (url) => {
     return fetch(url)
-            .then(res => { if (res.ok) { return res.json() } })
+            .then(res => { if (res.ok) { return res.json() }})
 }
 
 //* request to one call api
-const getWeatherResponse = ({ lat, lon }) => {
-    //? API Setting
+const getWeatherResponse = (latt, longt) => {
+    //* geocode API Setting
     const EXCLUDE = "hourly,minutely,current"
     const API_KEY = "af18dfbb2d163485e7669b46fb2f7c76"
-    const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}&exclude=${EXCLUDE}`
+    const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${latt}&lon=${longt}&appid=${API_KEY}&exclude=${EXCLUDE}`
     
-    //? request to api
+    //* get request geocode api
     return makeRequest(API)
 }
 
@@ -121,7 +123,7 @@ const clock = () => {
 }
 
 //* get city and country of user
-const getCountry_CityUser = () => {
+const getCountry_CityUserFromLocalStorage = () => {
     //* take lat and lon from localStorage
     const { country, city } = JSON.parse(localStorage.getItem("Geolocation"))
 
@@ -131,16 +133,48 @@ const getCountry_CityUser = () => {
 }
 
 //* put city and country in dom
-const putCountry_CityInDom = () => {
+const putCountry_CityInDom = (countryArg = '', cityArg = '') => {
     const cityElem = document.querySelector(".city-section-title")
-    const { country, city } = getCountry_CityUser()
-    cityElem.innerHTML = `${country} - ${city}`
+    
+    //* if I don't set argument take city and country name from localStorage and put them in dom
+    //* else I set country and city arguments just put them in dom
+    if (countryArg === "" && cityArg === "") {
+        const { country, city } = getCountry_CityUserFromLocalStorage()
+        cityElem.innerHTML = `${country} - ${city}`
+    } else 
+        cityElem.innerHTML = `${countryArg} - ${cityArg}`
 }
+
+//* get lat and lon of cities by name of them
+const getLatAndLonOfCity = (city) => {
+    //* geocode api setting for get lat and long of city
+    const API_KEY = "629829819389156476277x31205"
+    const geoit = "json"
+    const API = `https://geocode.xyz?auth=${API_KEY}&locate=${city}&geoit=${geoit}`
+    
+    //* get request to geocode api
+    makeRequest(API)
+        .then(res => {
+            if (res.error) throw new Error(res.error.description)
+            
+            const { latt, longt } = res
+
+            //* upload weather boxes in dom by lat and longt that we get them
+            uploadWeatherBoxInDom({ latt, longt })
+            
+            //* put country and city name in dom
+            putCountry_CityInDom(res.standard.countryname , res.standard.city)
+        })
+        .catch(err => console.error(err.message))
+}
+
+
+searchCityBtn.addEventListener("click", () => getLatAndLonOfCity(searchCityInput.value))
 
 //* call to some functions to do something
 window.addEventListener("load", () => {
     //* create weather boxes
-    uploadWeatherBoxInDom(getLocationOfUserFromUrl())
+    uploadWeatherBoxInDom( getLocationOfUserFromLocalStorage() )
     
     //* create date, time and put them in some elements
     headerDate.innerHTML = createDate()
@@ -152,7 +186,7 @@ window.addEventListener("load", () => {
     putCountry_CityInDom()
 
     //* put city name in value of search input
-    searchCityInput.value = getCountry_CityUser().city
+    searchCityInput.value = getCountry_CityUserFromLocalStorage().city
 
     //* start interval
     clock()

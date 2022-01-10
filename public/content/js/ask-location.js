@@ -15,8 +15,8 @@ const geolocationReq = () => {
                 localStorage.setItem("Geolocation", JSON.stringify({
                     country: data.country,
                     city: data.city,
-                    lat: data.latt,
-                    lon: data.longt
+                    latt: data.latt,
+                    longt: data.longt
                 }))
                 //* go to the home page and send the geo info
                 location.replace(`home.html`)
