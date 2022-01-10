@@ -4,22 +4,26 @@ const gpsMsg = document.querySelector(".gps-msg")
 
 //* request to user for allow location 
 const geolocationReq = () => {
-    navigator.geolocation.getCurrentPosition(
-        position => {
-            //* set geolocation of user in localStorage
-            localStorage.setItem("Geolocation", JSON.stringify({
-                lat: position.coords.latitude,
-                lon: position.coords.longitude
-            }))
-            //* go to the home page and send the geo info
-            location.replace(`home.html`)
-        },
-        err => {
-            //* stop loading
-            loading(false)
-            returnGeoErr(err.code)
-        }
-    )
+    fetch("https://api.ipify.org/?format=json")
+            .then(result => result.json())
+            .then(data => { 
+                return fetch(`https://geocode.xyz?auth=629829819389156476277x31205&locate=${data.ip}&geoit=json`)
+            })
+            .then(res => res.json())
+            .then(data => {
+                //* set geolocation of user in localStorage
+                localStorage.setItem("Geolocation", JSON.stringify({
+                    lat: data.latt,
+                    lon: data.longt
+                }))
+                //* go to the home page and send the geo info
+                location.replace(`home.html`)
+            })
+            .catch(err => {
+                //* stop loading
+                loading(false)
+                console.error(err)
+            })
 }
 
 //* start loading or stop loading
@@ -27,36 +31,11 @@ const loading = (bool) => {
     bool ? loadingElem.classList.add("active") : loadingElem.classList.remove("active")
 }
 
-//? return geolocation err for users
-const returnGeoErr = (err) => {
-    gpsMsg.classList.add("gps-msg-err")
-    switch (err) {
-        case 1: 
-            gpsMsg.innerHTML = "The acquisition of the geolocation information failed because the page didn't have the permission to do it."
-            break
-        case 2:
-            gpsMsg.innerHTML = "The acquisition of the geolocation failed <br> try again!"
-            break
-        case 3: 
-            gpsMsg.innerHTML = "something went wrong <br> try agian!"
-            break
-    }
-}
-
-window.addEventListener("load", () => {
-    //* check browser is support geolocation
-    if (navigator.geolocation) {
-        locationBtn.addEventListener("click", () => {
-            //* show loading
-            loading(true)
-            //* fetch geolocation 
-            geolocationReq()
-        })
-    } else {
-        gpsMsg.innerHTML += `<br> <span class="gps-msg-err">
-            sorry, your browser doesn't support geolocation for access your location
-        </span>`
-    }
+locationBtn.addEventListener("click", () => {
+    //* show loading
+    loading(true)
+    //* fetch geolocation 
+    geolocationReq()
 })
 
-// fetch("ea94944d14ab47d9bba7da95c31880f5")
+window.addEventListener("load", () => localStorage.clear())
