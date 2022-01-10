@@ -11,13 +11,15 @@ const searchCityBtn = document.getElementById("search-city-btn")
 //* get location of user from url (lat and )
 const getLocationOfUserFromLocalStorage = () => {
     //* take latt and longt from localStorage
-    const { latt, longt } = JSON.parse(localStorage.getItem("Geolocation"))
+    const Geolocation = JSON.parse(localStorage.getItem("Geolocation"))
 
     //* check latt and longt aren't undefined or null
-    if (latt && longt) {
+    if (Geolocation) {
+        const { latt, longt } = Geolocation
         return { latt, longt }
-    } else 
+    } else {
         location.replace("ask-location.html")
+    }
 }
 
 //* upload weather boxes --> this function calls to all of the functions we need to call for upload weather datas
