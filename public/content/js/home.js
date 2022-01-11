@@ -9,7 +9,7 @@ const searchCityInput = document.getElementById("search-city-input")
 const searchCityBtn = document.getElementById("search-city-btn")
 const loadingElem = document.querySelector(".loading")
 
-//* get location of user from url (lat and )
+//* get location of user from url ( latt and longt )
 const getLocationOfUserFromLocalStorage = () => {
     //* take latt and longt from localStorage
     const Geolocation = JSON.parse(localStorage.getItem("Geolocation"))
@@ -18,39 +18,31 @@ const getLocationOfUserFromLocalStorage = () => {
     if (Geolocation) {
         const { latt, longt } = Geolocation
         return { latt, longt }
-    } else
+    } else 
         location.replace("ask-location.html")
 }
 
-//* upload weather boxes --> this function calls to all of the functions we need to call for upload weather datas
-const uploadWeatherBoxInDom = ( latt_longt_object ) => {
-    const { latt, longt } = latt_longt_object
-    const weatherDatas = getWeatherResponse(latt, longt)
-    
+//* upload weather boxes
+const uploadWeatherBoxInDom = ( weatherResponseObject ) => {    
     wrap.innerHTML = ""
     const Fragment = new DocumentFragment()
 
-    weatherDatas
-    .then(res => {
-        res.daily.forEach( (dayObject, dayIndex) => {
-            //* don't appendChild last object and don't create weather data box for that
-            if (dayIndex !== res.daily.length - 1)
-                Fragment.appendChild(createWeatherDataBox(dayObject))
-        })
-        wrap.appendChild(Fragment)
+    weatherResponseObject.daily.forEach((dayObject, dayIndex) => {
+        //* don't appendChild last object and don't create weather data box for that
+        if (dayIndex !== weatherResponseObject.daily.length - 1)
+            //* call to (createWeatherDataBox) to make weather boxes
+            Fragment.appendChild(createWeatherDataBox(dayObject))
     })
-    .catch(console.error)
+    
+    //* append Fragment That is full of the weather boxes
+    wrap.appendChild(Fragment)
 }
 
-//* send request and return response
+//* send request and return response in a promise
 const makeRequest = (url) => {
-    //* active loading
-    loading(true)
     //* return a response in a promise
     return fetch(url)
             .then(res => { if (res.ok) { 
-                //* deactive loading
-                loading(false)
                 //* return response
                 return res.json() 
             }})
@@ -58,13 +50,26 @@ const makeRequest = (url) => {
 
 //* request to one call api
 const getWeatherResponse = (latt, longt) => {
+    //* active loader
+    loading(true)
+
     //* geocode API Setting
     const EXCLUDE = "hourly,minutely,current"
     const API_KEY = "af18dfbb2d163485e7669b46fb2f7c76"
     const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${latt}&lon=${longt}&appid=${API_KEY}&exclude=${EXCLUDE}`
+    const weatherResponses = makeRequest(API)
     
-    //* get request geocode api
-    return makeRequest(API)
+    return weatherResponses
+        .then(res => res)
+        .catch(() => {
+            //* no internet ( create a error to show you dont have internet )
+
+            //* deactive loader
+        })
+        .finally(() => {
+            //* deactive loader
+            loading(false)
+        })
 }
 
 //* create weather data box
@@ -155,7 +160,7 @@ const putCountry_CityInDom = (countryArg = '', cityArg = '') => {
         cityElem.innerHTML = `${countryArg} - ${cityArg}`
 }
 
-//* get lat and lon of cities by name of them
+//* get lat and lon of cities by name of them and send them to receive weather responses then upload weather boxes
 const getLatAndLonOfCity = (city) => {
     //* geocode api setting for get lat and long of city
     const API_KEY = "629829819389156476277x31205"
@@ -170,7 +175,8 @@ const getLatAndLonOfCity = (city) => {
             const { latt, longt } = res
 
             //* upload weather boxes in dom by lat and longt that we get them
-            uploadWeatherBoxInDom({ latt, longt })
+            getWeatherResponse(latt, longt)
+                .then(data => uploadWeatherBoxInDom(data))
             
             //* put country and city name in dom
             putCountry_CityInDom(res.standard.countryname , res.standard.city)
@@ -185,10 +191,16 @@ const loading = (bool) => {
 
 searchCityBtn.addEventListener("click", () => getLatAndLonOfCity(searchCityInput.value))
 
-//* call to some functions to do something
 window.addEventListener("load", () => {
-    //* create weather boxes
-    uploadWeatherBoxInDom( getLocationOfUserFromLocalStorage() )
+    //* get latt and longt from local storage
+    const { latt, longt } = getLocationOfUserFromLocalStorage()
+    
+    //* get weather responses with lat and longt and then upload 
+    getWeatherResponse(latt, longt)
+        .then(data => uploadWeatherBoxInDom(data))
+    
+    //* create date, time and put them in some elements
+    headerDate.innerHTML = createDate()
     
     //* create date, time and put them in some elements
     headerDate.innerHTML = createDate()
