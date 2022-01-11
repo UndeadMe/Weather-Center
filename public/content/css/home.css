@@ -1,4 +1,5 @@
 @import url(../../components/aside/aside.css);
+@import url(../../components/loader/loader.css);
 
 body {
     background: var(--home-gradient) !important;

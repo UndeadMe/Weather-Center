@@ -7,23 +7,23 @@ const weatherTodayDate = document.querySelector(".weather-today-date")
 const wrap = document.querySelector(".weather-wrap")
 const searchCityInput = document.getElementById("search-city-input")
 const searchCityBtn = document.getElementById("search-city-btn")
+const loadingElem = document.querySelector(".loading")
 
 //* get location of user from url (lat and )
 const getLocationOfUserFromLocalStorage = () => {
     //* take latt and longt from localStorage
     const Geolocation = JSON.parse(localStorage.getItem("Geolocation"))
-
+    
     //* check latt and longt aren't undefined or null
     if (Geolocation) {
         const { latt, longt } = Geolocation
         return { latt, longt }
-    } else {
+    } else
         location.replace("ask-location.html")
-    }
 }
 
 //* upload weather boxes --> this function calls to all of the functions we need to call for upload weather datas
-const uploadWeatherBoxInDom = (latt_longt_object) => {
+const uploadWeatherBoxInDom = ( latt_longt_object ) => {
     const { latt, longt } = latt_longt_object
     const weatherDatas = getWeatherResponse(latt, longt)
     
@@ -42,10 +42,18 @@ const uploadWeatherBoxInDom = (latt_longt_object) => {
     .catch(console.error)
 }
 
-//? send request and return response
+//* send request and return response
 const makeRequest = (url) => {
+    //* active loading
+    loading(true)
+    //* return a response in a promise
     return fetch(url)
-            .then(res => { if (res.ok) { return res.json() }})
+            .then(res => { if (res.ok) { 
+                //* deactive loading
+                loading(false)
+                //* return response
+                return res.json() 
+            }})
 }
 
 //* request to one call api
@@ -170,6 +178,10 @@ const getLatAndLonOfCity = (city) => {
         .catch(err => console.error(err.message))
 }
 
+//* start loading or stop loading
+const loading = (bool) => {
+    bool ? loadingElem.classList.add("active") : loadingElem.classList.remove("active")
+}
 
 searchCityBtn.addEventListener("click", () => getLatAndLonOfCity(searchCityInput.value))
 
