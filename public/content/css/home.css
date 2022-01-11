@@ -30,9 +30,8 @@ body {
     height: 100%;
     background-image: url(../img/header/sunny.jpg);
     background-size: cover;
-    background-position: 0 120%;
+    background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
     z-index: -1;
 }
 .header::after {
