@@ -6,11 +6,13 @@ const gpsMsg = document.querySelector(".gps-msg")
 const geolocationReq = () => {
     fetch("https://api.ipify.org/?format=json")
         .then(result => result.json())
-        .then(data => { 
-            return fetch(`https://geocode.xyz?auth=629829819389156476277x31205&locate=${data.ip}&geoit=json`)
+        .then(data => {
+            return fetch(`https://geocode.xyz?auth=944987828534649747748x76064&locate=${data.ip}&geoit=json`)
         })
         .then(res => res.json())
         .then(data => {
+            if (data.error) throw new Error("please try again later")   
+            
             //* set geolocation of user in localStorage
             localStorage.setItem("Geolocation", JSON.stringify({
                 country: data.country,
@@ -18,6 +20,7 @@ const geolocationReq = () => {
                 latt: data.latt,
                 longt: data.longt
             }))
+
             //* go to the home page and send the geo info
             location.replace(`home.html`)
         })

@@ -8,6 +8,7 @@ const wrap = document.querySelector(".weather-wrap")
 const searchCityInput = document.getElementById("search-city-input")
 const searchCityBtn = document.getElementById("search-city-btn")
 const loadingElem = document.querySelector(".loading")
+const cityWeatherWeekWrap = document.querySelector(".city-weather-week-wrap")
 
 //* get location of user from url ( latt and longt )
 const getLocationOfUserFromLocalStorage = () => {
@@ -23,7 +24,7 @@ const getLocationOfUserFromLocalStorage = () => {
 }
 
 //* upload weather boxes
-const uploadWeatherBoxInDom = ( weatherResponseObject ) => {    
+const uploadWeatherBoxInDom = ( weatherResponseObject ) => {
     wrap.innerHTML = ""
     const Fragment = new DocumentFragment()
 
@@ -39,17 +40,18 @@ const uploadWeatherBoxInDom = ( weatherResponseObject ) => {
 }
 
 //* send request and return response in a promise
-const makeRequest = (url) => {
+const makeRequest = (url, err = '') => {
     //* return a response in a promise
     return fetch(url)
-            .then(res => { if (res.ok) { 
+            .then(res => {
+                if (!res.ok) throw new Error(err)
                 //* return response
                 return res.json() 
-            }})
+            })
 }
 
 //* request to one call api
-const getWeatherResponse = (latt, longt) => {
+const getWeatherResponse = (latt, longt, err) => {
     //* active loader
     loading(true)
 
@@ -57,14 +59,12 @@ const getWeatherResponse = (latt, longt) => {
     const EXCLUDE = "hourly,minutely,current"
     const API_KEY = "af18dfbb2d163485e7669b46fb2f7c76"
     const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${latt}&lon=${longt}&appid=${API_KEY}&exclude=${EXCLUDE}`
-    const weatherResponses = makeRequest(API)
-    
+    const weatherResponses = makeRequest(API, err)
+
     return weatherResponses
         .then(res => res)
-        .catch(() => {
-            //* no internet ( create a error to show you dont have internet )
-
-            //* deactive loader
+        .catch(err => {
+            throw err
         })
         .finally(() => {
             //* deactive loader
@@ -78,6 +78,7 @@ const createWeatherDataBox = (weatherResponse) => {
     const humidity = weatherResponse.humidity
     const min_temp = weatherResponse.temp.min
     const pressure = weatherResponse.pressure
+    const today = createDate().split(",")[0]
 
     const children_element_of_weather_box =
     `<h3 class="p-0 m-0">${day}</h3>
@@ -90,6 +91,9 @@ const createWeatherDataBox = (weatherResponse) => {
     weather_box.classList.add("weather-week")
     weather_box.insertAdjacentHTML("beforeend", children_element_of_weather_box)
     
+    //* if weather reponse day === today , change the backgorund of this box
+    if (day === today) weather_box.classList.add("active")
+
     return weather_box
 }
 
@@ -112,7 +116,7 @@ const createDate = () => {
 //* create Day Name by number of day
 const createDayName = (dayDate) => { return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayDate] }
 
-//? create Day Name by time of forecasted data
+//* create Day Name by time of forecasted data
 const createDays = (dt) => {
     const date = new Date(dt * 1000)
     const numberOfDay = date.getDay()
@@ -143,8 +147,7 @@ const getCountry_CityUserFromLocalStorage = () => {
     const { country, city } = JSON.parse(localStorage.getItem("Geolocation"))
 
     //* check county and city of user arn't null or undefined
-    if (country && city)
-        return { country, city }
+    if (country && city) return { country, city }
 }
 
 //* put city and country in dom
@@ -162,31 +165,58 @@ const putCountry_CityInDom = (countryArg = '', cityArg = '') => {
 
 //* get lat and lon of cities by name of them and send them to receive weather responses then upload weather boxes
 const getLatAndLonOfCity = (city) => {
+    loading(true)
     //* geocode api setting for get lat and long of city
-    const API_KEY = "629829819389156476277x31205"
+    const API_KEY = "944987828534649747748x76064"
     const geoit = "json"
     const API = `https://geocode.xyz?auth=${API_KEY}&locate=${city}&geoit=${geoit}`
     
     //* get request to geocode api
     makeRequest(API)
         .then(res => {
-            if (res.error) throw new Error(res.error.description)
+            if (res.error) throw new Error("city not found please enter the correct city")
             
             const { latt, longt } = res
 
             //* upload weather boxes in dom by lat and longt that we get them
-            getWeatherResponse(latt, longt)
+            getWeatherResponse(latt, longt, "problem getting weather info of city")
                 .then(data => uploadWeatherBoxInDom(data))
+                .catch(err => createErorr(err.message))
             
             //* put country and city name in dom
             putCountry_CityInDom(res.standard.countryname , res.standard.city)
         })
-        .catch(err => console.error(err.message))
+        .catch(err => createErorr(err.message))
+        .finally(() => loading(false))
 }
 
 //* start loading or stop loading
 const loading = (bool) => {
     bool ? loadingElem.classList.add("active") : loadingElem.classList.remove("active")
+}
+
+//* create error 
+const createErorr = (err = '') => {
+    const errorBox = document.createElement("div")
+    errorBox.className = "d-flex justify-content-between error-box"
+    errorBox.classList.add("error-box")
+    errorBox.innerHTML = err
+
+    const div = document.createElement("div")
+
+    const tryAgainBtn = document.createElement("btn")
+    tryAgainBtn.classList.add("try-again-btn")
+    tryAgainBtn.innerHTML = "try again"
+
+    const requestToRandomCity = document.createElement("btn")
+    requestToRandomCity.innerHTML = "show a default city"
+    requestToRandomCity.classList.add("request-to-random-city")
+
+    cityWeatherWeekWrap.innerHTML = ""
+
+    div.append(tryAgainBtn, requestToRandomCity)
+    errorBox.append(div)
+    cityWeatherWeekWrap.appendChild(errorBox)
 }
 
 searchCityBtn.addEventListener("click", () => getLatAndLonOfCity(searchCityInput.value))
@@ -196,8 +226,9 @@ window.addEventListener("load", () => {
     const { latt, longt } = getLocationOfUserFromLocalStorage()
     
     //* get weather responses with lat and longt and then upload 
-    getWeatherResponse(latt, longt)
+    getWeatherResponse(latt, longt, "problem getting your weather info of city")
         .then(data => uploadWeatherBoxInDom(data))
+        .catch(err => createErorr(err.message))
     
     //* create date, time and put them in some elements
     headerDate.innerHTML = createDate()

@@ -272,3 +272,32 @@ body {
 .calender-btn:active {
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.9);
 }
+/* ! -------------------------------- error box ------------------------------- ! */
+.error-box {
+    background: #9b2226;
+    padding: 13px 10px 13px 15px;
+    font-size: 1.3rem;
+    text-transform: capitalize;
+    color: var(--white);
+    border-radius: 5px;
+}
+.try-again-btn, .request-to-random-city {
+    padding: 8px 15px;
+    border-radius: 3px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: .3s;
+}
+.try-again-btn {
+    margin-right: 10px;
+}
+.request-to-random-city {
+    background: var(--white);
+    color: #9b2226;
+}
+.request-to-random-city:hover {
+    filter: brightness(0.8);
+}
+.try-again-btn:hover {
+    background: #611316;
+}
