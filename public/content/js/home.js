@@ -8,17 +8,17 @@ const wrap = document.querySelector(".weather-wrap")
 const searchCityInput = document.getElementById("search-city-input")
 const searchCityBtn = document.getElementById("search-city-btn")
 const loadingElem = document.querySelector(".loading")
-const cityWeatherWeekWrap = document.querySelector(".city-weather-week-wrap")
+const weatherWeekHeadings = document.querySelector(".weather-week-headings")
+const cityElem = document.querySelector(".city-section-title")
 
-//* get location of user from url ( latt and longt )
-const getLocationOfUserFromLocalStorage = () => {
-    //* take latt and longt from localStorage
+//* get location of user from url ( city )
+const getCityOfUserFromLocalStorage = () => {
+    //* take city from localStorage
     const Geolocation = JSON.parse(localStorage.getItem("Geolocation"))
     
-    //* check latt and longt aren't undefined or null
+    //* check city aren't undefined or null
     if (Geolocation) {
-        const { latt, longt } = Geolocation
-        return { latt, longt }
+        return Geolocation.city
     } else 
         location.replace("ask-location.html")
 }
@@ -52,24 +52,11 @@ const makeRequest = (url, err = '') => {
 
 //* request to one call api
 const getWeatherResponse = (latt, longt, err) => {
-    //* active loader
-    loading(true)
-
     //* geocode API Setting
     const EXCLUDE = "hourly,minutely,current"
     const API_KEY = "af18dfbb2d163485e7669b46fb2f7c76"
     const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${latt}&lon=${longt}&appid=${API_KEY}&exclude=${EXCLUDE}`
-    const weatherResponses = makeRequest(API, err)
-
-    return weatherResponses
-        .then(res => res)
-        .catch(err => {
-            throw err
-        })
-        .finally(() => {
-            //* deactive loader
-            loading(false)
-        })
+    return makeRequest(API, err)
 }
 
 //* create weather data box
@@ -152,8 +139,6 @@ const getCountry_CityUserFromLocalStorage = () => {
 
 //* put city and country in dom
 const putCountry_CityInDom = (countryArg = '', cityArg = '') => {
-    const cityElem = document.querySelector(".city-section-title")
-    
     //* if I don't set argument take city and country name from localStorage and put them in dom
     //* else I set country and city arguments just put them in dom
     if (countryArg === "" && cityArg === "") {
@@ -166,27 +151,37 @@ const putCountry_CityInDom = (countryArg = '', cityArg = '') => {
 //* get lat and lon of cities by name of them and send them to receive weather responses then upload weather boxes
 const getLatAndLonOfCity = (city) => {
     loading(true)
+    
     //* geocode api setting for get lat and long of city
     const API_KEY = "944987828534649747748x76064"
     const geoit = "json"
     const API = `https://geocode.xyz?auth=${API_KEY}&locate=${city}&geoit=${geoit}`
     
+    let res_country = null
+    let res_city = null
+
     //* get request to geocode api
     makeRequest(API)
         .then(res => {
             if (res.error) throw new Error("city not found please enter the correct city")
-            
-            const { latt, longt } = res
 
-            //* upload weather boxes in dom by lat and longt that we get them
-            getWeatherResponse(latt, longt, "problem getting weather info of city")
-                .then(data => uploadWeatherBoxInDom(data))
-                .catch(err => createErorr(err.message))
+            res_country = res.standard.countryname
+            res_city = res.standard.city
             
-            //* put country and city name in dom
-            putCountry_CityInDom(res.standard.countryname , res.standard.city)
+            return getWeatherResponse(res.latt, res.longt, "problem getting weather info of city")
         })
-        .catch(err => createErorr(err.message))
+        .then(res => {
+            //* upload weather boxes in dom by lat and longt that we get them
+            uploadWeatherBoxInDom(res)
+            //* put country and city name in dom
+            putCountry_CityInDom(res_country, res_city)
+
+            weatherWeekHeadings.style.display = "flex"
+        })
+        .catch(err => {
+            cityElem.innerHTML = ""
+            createErorr(err.message)
+        })
         .finally(() => loading(false))
 }
 
@@ -197,6 +192,8 @@ const loading = (bool) => {
 
 //* create error 
 const createErorr = (err = '') => {
+    weatherWeekHeadings.style.display = "none"
+
     const errorBox = document.createElement("div")
     errorBox.className = "d-flex justify-content-between error-box"
     errorBox.classList.add("error-box")
@@ -207,29 +204,29 @@ const createErorr = (err = '') => {
     const tryAgainBtn = document.createElement("btn")
     tryAgainBtn.classList.add("try-again-btn")
     tryAgainBtn.innerHTML = "try again"
+    tryAgainBtn.addEventListener("click", () => getLatAndLonOfCity(searchCityInput.value))
 
     const requestToRandomCity = document.createElement("btn")
     requestToRandomCity.innerHTML = "show a default city"
     requestToRandomCity.classList.add("request-to-random-city")
+    requestToRandomCity.addEventListener("click", () => getLatAndLonOfCity(getCityOfUserFromLocalStorage()))
 
-    cityWeatherWeekWrap.innerHTML = ""
+    wrap.innerHTML = ""
 
     div.append(tryAgainBtn, requestToRandomCity)
     errorBox.append(div)
-    cityWeatherWeekWrap.appendChild(errorBox)
+    wrap.appendChild(errorBox)
 }
 
 searchCityBtn.addEventListener("click", () => getLatAndLonOfCity(searchCityInput.value))
 
 window.addEventListener("load", () => {
-    //* get latt and longt from local storage
-    const { latt, longt } = getLocationOfUserFromLocalStorage()
+    //* get city from local storage
+    const city = getCityOfUserFromLocalStorage()
     
     //* get weather responses with lat and longt and then upload 
-    getWeatherResponse(latt, longt, "problem getting your weather info of city")
-        .then(data => uploadWeatherBoxInDom(data))
-        .catch(err => createErorr(err.message))
-    
+    getLatAndLonOfCity(city)
+
     //* create date, time and put them in some elements
     headerDate.innerHTML = createDate()
     
@@ -238,9 +235,6 @@ window.addEventListener("load", () => {
 
     //* put data in weather today box
     weatherTodayDate.innerHTML = `<i class="bi bi-calendar2 me-1"></i>  ${createDate()}`
-
-    //* put Country and city names in dom
-    putCountry_CityInDom()
 
     //* put city name in value of search input
     searchCityInput.value = getCountry_CityUserFromLocalStorage().city
