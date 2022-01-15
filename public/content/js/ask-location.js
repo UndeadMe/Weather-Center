@@ -4,29 +4,36 @@ const gpsMsg = document.querySelector(".gps-msg")
 
 //* request to user for allow location 
 const geolocationReq = () => {
-    fetch("https://api.ipify.org/?format=json")
-        .then(result => result.json())
-        .then(data => {
-            return fetch(`https://geocode.xyz?auth=944987828534649747748x76064&locate=${data.ip}&geoit=json`)
+    getPosition()
+        .then(res => {
+            const { latitude: latt, longitude:longt } = res
+            return fetch(`https://us1.locationiq.com/v1/reverse.php?key=pk.5717d3458249d3af26201b6e2442aa88&lat=${latt}&lon=${longt}&format=json&accept-language=en`)
         })
         .then(res => res.json())
         .then(data => {
-            if (data.error) throw new Error("please try again later")   
-            
-            //* set geolocation of user in localStorage
-            localStorage.setItem("Geolocation", JSON.stringify({
-                country: data.country,
-                city: data.city,
-                latt: data.latt,
-                longt: data.longt
-            }))
+            //* error handler
+            if (data.error) throw new Error("please try again later")
+
+            //* set user info datas
+            const user_info = {
+                country: data.address.country,
+                city: data.address.town,
+                latitude: data.lat,
+                longitude: data.lon,
+            }
+
+            //* save user data in localStorage
+            saveInLocalStorage(user_info)
 
             //* go to the home page and send the geo info
             location.replace(`home.html`)
         })
         .catch(err => {
+            console.error(err.message)
+            
             //* stop loading
             loading(false)
+            
             //* render error
             renderErr(`${err.message} <br> couldn't get access`)
         })
@@ -43,6 +50,29 @@ const renderErr = (err) => {
     gpsMsg.innerHTML = err
 }
 
+//* get position of user
+const getPosition = () => {
+    return new Promise((res , rej) => {
+        //* get geolocation
+        navigator.geolocation.getCurrentPosition(
+            //* success 
+            position => {
+                res(position.coords)
+            }, 
+            //* error
+            err => {
+                rej(new Error("problem getting your geolocation of city"))
+            }
+        )
+    })
+}
+
+//* save datas in localStorage
+const saveInLocalStorage = (object) => {
+    localStorage.setItem("Geolocation", JSON.stringify(object))
+}
+
+//* events handlers
 locationBtn.addEventListener("click", () => {
     //* show loading
     loading(true)

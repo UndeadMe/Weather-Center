@@ -11,15 +11,15 @@ const loadingElem = document.querySelector(".loading")
 const weatherWeekHeadings = document.querySelector(".weather-week-headings")
 const cityElem = document.querySelector(".city-section-title")
 
-//* get location of user from url ( city )
-const getCityOfUserFromLocalStorage = () => {
-    //* take city from localStorage
+//* check user is init or no
+const check_get_UserInfo = () => {
+    //* take geolocation from localStorage
     const Geolocation = JSON.parse(localStorage.getItem("Geolocation"))
     
-    //* check city aren't undefined or null
+    //* check user's geolocation is init
     if (Geolocation) {
-        return Geolocation.city
-    } else 
+        return Geolocation
+    } else
         location.replace("ask-location.html")
 }
 
@@ -58,7 +58,6 @@ const getWeatherResponse = (latt, longt, err) => {
     const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${latt}&lon=${longt}&appid=${API_KEY}&exclude=${EXCLUDE}`
     return makeRequest(API, err)
 }
-
 //* create weather data box
 const createWeatherDataBox = (weatherResponse) => {
     const day = createDays(weatherResponse.dt)
@@ -128,57 +127,39 @@ const clock = () => {
     }, 1000)
 }
 
-//* get city and country of user
-const getCountry_CityUserFromLocalStorage = () => {
-    //* take lat and lon from localStorage
-    const { country, city } = JSON.parse(localStorage.getItem("Geolocation"))
-
-    //* check county and city of user arn't null or undefined
-    if (country && city) return { country, city }
-}
-
-//* put city and country in dom
-const putCountry_CityInDom = (countryArg = '', cityArg = '') => {
-    //* if I don't set argument take city and country name from localStorage and put them in dom
-    //* else I set country and city arguments just put them in dom
-    if (countryArg === "" && cityArg === "") {
-        const { country, city } = getCountry_CityUserFromLocalStorage()
-        cityElem.innerHTML = `${country} - ${city}`
-    } else 
-        cityElem.innerHTML = `${countryArg} - ${cityArg}`
-}
-
 //* get lat and lon of cities by name of them and send them to receive weather responses then upload weather boxes
 const getLatAndLonOfCity = (city) => {
     loading(true)
     
     //* geocode api setting for get lat and long of city
-    const API_KEY = "944987828534649747748x76064"
-    const geoit = "json"
-    const API = `https://geocode.xyz?auth=${API_KEY}&locate=${city}&geoit=${geoit}`
-    
-    let res_country = null
-    let res_city = null
+    const API_KEY = "pk.5717d3458249d3af26201b6e2442aa88"
+    const Accept_Language = "en"
+    const format = "json"
+    const limit = 1
+    const API = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${city}&format=${format}&accept-language=${Accept_Language}&limit=${limit}`
+
+    let res_address = ""
 
     //* get request to geocode api
-    makeRequest(API)
+    makeRequest(API, "city not found please enter the correct city")
         .then(res => {
-            if (res.error) throw new Error("city not found please enter the correct city")
+            const [{ lat: latt, lon: longt }] = res
 
-            res_country = res.standard.countryname
-            res_city = res.standard.city
-            
-            return getWeatherResponse(res.latt, res.longt, "problem getting weather info of city")
+            res_address = createUserAddress(res[0].display_name)
+
+            return getWeatherResponse(latt, longt, "problem getting weather info of city")
         })
         .then(res => {
             //* upload weather boxes in dom by lat and longt that we get them
             uploadWeatherBoxInDom(res)
+            
             //* put country and city name in dom
-            putCountry_CityInDom(res_country, res_city)
+            cityElem.innerHTML = res_address
 
             weatherWeekHeadings.style.display = "flex"
         })
         .catch(err => {
+            console.error(err.message)
             cityElem.innerHTML = ""
             createErorr(err.message)
         })
@@ -209,7 +190,7 @@ const createErorr = (err = '') => {
     const requestToRandomCity = document.createElement("btn")
     requestToRandomCity.innerHTML = "show a default city"
     requestToRandomCity.classList.add("request-to-random-city")
-    requestToRandomCity.addEventListener("click", () => getLatAndLonOfCity(getCityOfUserFromLocalStorage()))
+    requestToRandomCity.addEventListener("click", () => getLatAndLonOfCity(check_get_UserInfo().city))
 
     wrap.innerHTML = ""
 
@@ -218,27 +199,30 @@ const createErorr = (err = '') => {
     wrap.appendChild(errorBox)
 }
 
+//* handle user address
+const createUserAddress = (address) => {
+    const adrs = `${address.split(",")[0]} - ${address.split(",")[address.split(",").length - 1]}`
+    return adrs.split("-").reverse().join(" - ").trim()
+}
+
 searchCityBtn.addEventListener("click", () => getLatAndLonOfCity(searchCityInput.value))
 
 window.addEventListener("load", () => {
     //* get city from local storage
-    const city = getCityOfUserFromLocalStorage()
-    
-    //* get weather responses with lat and longt and then upload 
-    getLatAndLonOfCity(city)
+    if (check_get_UserInfo()) {
+        //* get weather responses with lat and longt and then upload 
+        getLatAndLonOfCity(check_get_UserInfo().city)
 
-    //* create date, time and put them in some elements
-    headerDate.innerHTML = createDate()
-    
-    //* create date, time and put them in some elements
-    headerDate.innerHTML = createDate()
+        //* create date, time and put them in some elements
+        headerDate.innerHTML = createDate()
 
-    //* put data in weather today box
-    weatherTodayDate.innerHTML = `<i class="bi bi-calendar2 me-1"></i>  ${createDate()}`
+        //* put data in weather today box
+        weatherTodayDate.innerHTML = `<i class="bi bi-calendar2 me-1"></i>  ${createDate()}`
 
-    //* put city name in value of search input
-    searchCityInput.value = getCountry_CityUserFromLocalStorage().city
+        //* put city name in value of search input
+        searchCityInput.value = check_get_UserInfo().city
 
-    //* start interval
-    clock()
+        //* start interval
+        clock()
+    }
 })
