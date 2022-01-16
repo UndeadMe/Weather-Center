@@ -187,13 +187,6 @@ body {
     font-size: 2rem;
     cursor: pointer;
 }
-.weather-data-C {
-    width: 7px;
-    height: 7px;
-    border: 2px solid var(--ice-white);
-    border-radius: 10px;
-    margin-left: 3px;
-}
 .weather-week-headings {
     width: 100%;
     display: flex;
@@ -243,20 +236,28 @@ body {
     height: 400px;
     background: var(--weather-today-box-gradient);
     border-radius: 25px;
-    padding: 10px 25px;
+    padding: 25px 35px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
+.weather-today-box-inner.error {
+    background: #9b2226;
+}
+.weather-icon {
+    margin-left: 10px;
+}
 .weather-today-today {
     color: var(--dark-green);
-    font-weight: bolder;
+    margin-left: -5px;
+    font-size: 2rem;
 }
-.weather-today-day {
-    font-weight: bolder;
-}
-.weather-today-gps, .weather-today-date, .weather-today-temp, .weather-today-day {
+.weather-today-gps, .weather-today-date, .weather-today-temp, .weather-today-day, .weather-today-like {
     color: var(--ice-white);
+}
+.weather-today-temp {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
 }
 .calender-btn {
     border-radius: 17px;

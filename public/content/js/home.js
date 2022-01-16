@@ -1,15 +1,14 @@
-
 //? get elements
 const headerDate = document.querySelector(".header-date")
 const headerTime = document.querySelector(".navbar-hour")
-const weatherTodayGps = document.querySelector(".weather-today-gps")
-const weatherTodayDate = document.querySelector(".weather-today-date")
 const wrap = document.querySelector(".weather-wrap")
+const weatherTodayGps = document.querySelector(".weather-today-gps")
 const searchCityInput = document.getElementById("search-city-input")
 const searchCityBtn = document.getElementById("search-city-btn")
 const loadingElem = document.querySelector(".loading")
 const weatherWeekHeadings = document.querySelector(".weather-week-headings")
 const cityElem = document.querySelector(".city-section-title")
+const weatherTodayBoxInner = document.querySelector(".weather-today-box-inner")
 
 //* check user is init or no
 const check_get_UserInfo = () => {
@@ -55,32 +54,79 @@ const getWeatherResponse = (latt, longt, err) => {
     //* geocode API Setting
     const EXCLUDE = "hourly,minutely,current"
     const API_KEY = "af18dfbb2d163485e7669b46fb2f7c76"
-    const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${latt}&lon=${longt}&appid=${API_KEY}&exclude=${EXCLUDE}`
+    const units = "metric"
+    const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${latt}&lon=${longt}&appid=${API_KEY}&exclude=${EXCLUDE}&units=${units}`
     return makeRequest(API, err)
 }
+
 //* create weather data box
 const createWeatherDataBox = (weatherResponse) => {
     const day = createDays(weatherResponse.dt)
     const humidity = weatherResponse.humidity
     const min_temp = weatherResponse.temp.min
     const pressure = weatherResponse.pressure
+    const weather_icon = weatherResponse.weather[0].icon
     const today = createDate().split(",")[0]
 
     const children_element_of_weather_box =
-    `<h3 class="p-0 m-0">${day}</h3>
-    <h3 class="p-0 m-0">${min_temp}k</h3>
+    `<h3 class="p-0 m-0"><img src="https://openweathermap.org/img/w/${weather_icon}.png"> ${day}</h3>
+    <h3 class="p-0 m-0">${min_temp}°C</h3>
     <h3 class="p-0 m-0">${humidity}% <i class="bi bi-droplet"></i></h3>
     <h3 class="p-0 m-0">${pressure}Pa</h3>
     <h3 class="p-0 m-0"><span class="more-info-span"><i class="bi bi-three-dots"></i></span></h3>`
-    
+
+    //* create weather box
     const weather_box = document.createElement("div")
     weather_box.classList.add("weather-week")
     weather_box.insertAdjacentHTML("beforeend", children_element_of_weather_box)
     
+    // console.log(weather_box.children[0].appendChild)
+
     //* if weather reponse day === today , change the backgorund of this box
-    if (day === today) weather_box.classList.add("active")
+    if (day === today) { 
+        //* active today weather box
+        weather_box.classList.add("active") 
+        //* create today weather box and save data in dom
+        createTodayWeatherDataBox(weatherResponse)
+    }
 
     return weather_box
+}
+
+//* create today weather data box
+const createTodayWeatherDataBox = (weather_today_object) => {
+    const weather_main = weather_today_object.weather[0].main
+    const weather_main_desc = weather_today_object.weather[0].description
+    const weather_icon_id = weather_today_object.weather[0].icon
+    const weather_temp_day = `${weather_today_object.temp.day}°C`
+    const weather_temp_eve = `${weather_today_object.temp.eve}°C`
+    const weather_temp_night = `${weather_today_object.temp.day}°C`
+
+    const weather_icon = document.createElement("img")
+    weather_icon.src = `https://openweathermap.org/img/w/${weather_icon_id}.png`
+
+    //* add datas in dom
+    document.querySelector(".weather-today-today").innerHTML = "today"
+    document.querySelector(".weather-today-day").innerHTML = weather_main
+    document.querySelector(".weather-today-like").innerHTML = weather_main_desc
+    document.querySelectorAll(".weather-today-temp")[0].innerHTML = `day: ${weather_temp_day}`
+    document.querySelectorAll(".weather-today-temp")[1].innerHTML = `eve: ${weather_temp_eve}`
+    document.querySelectorAll(".weather-today-temp")[2].innerHTML = `night: ${weather_temp_night}`
+    document.querySelector(".weather-today-date").innerHTML = `<i class="bi bi-calendar2 me-1"></i>  ${createDate()}`
+    document.querySelector(".weather-icon").innerHTML = ""
+    document.querySelector(".weather-icon").append(weather_icon)
+}
+
+//* empty the weather today box
+const convertWeatherTodayBoxToError = () => {
+    document.querySelector(".weather-today-today").innerHTML = ""
+    document.querySelector(".weather-today-day").innerHTML = ""
+    document.querySelector(".weather-icon").innerHTML = ""
+    document.querySelector(".weather-today-like").innerHTML = ""
+    document.querySelectorAll(".weather-today-temp").forEach(item => item.innerHTML = "")
+    weatherTodayGps.innerHTML = ""
+    document.querySelector(".weather-today-date").innerHTML = ""
+    weatherTodayBoxInner.classList.add("error")
 }
 
 //* create date
@@ -129,6 +175,7 @@ const clock = () => {
 
 //* get lat and lon of cities by name of them and send them to receive weather responses then upload weather boxes
 const getLatAndLonOfCity = (city) => {
+    //* active loading
     loading(true)
     
     //* geocode api setting for get lat and long of city
@@ -152,9 +199,11 @@ const getLatAndLonOfCity = (city) => {
         .then(res => {
             //* upload weather boxes in dom by lat and longt that we get them
             uploadWeatherBoxInDom(res)
+            weatherTodayBoxInner.classList.remove("error")
             
             //* put country and city name in dom
-            cityElem.innerHTML = res_address
+            cityElem.innerHTML = `<i class="bi bi-geo-alt-fill"></i> ${res_address}`
+            weatherTodayGps.innerHTML = `<i class="bi bi-geo-alt-fill"></i> ${res_address}`
 
             weatherWeekHeadings.style.display = "flex"
         })
@@ -162,6 +211,8 @@ const getLatAndLonOfCity = (city) => {
             console.error(err.message)
             cityElem.innerHTML = ""
             createErorr(err.message)
+            convertWeatherTodayBoxToError()
+            cityElem.innerHTML = "problem getting address"
         })
         .finally(() => loading(false))
 }
@@ -216,11 +267,10 @@ window.addEventListener("load", () => {
         //* create date, time and put them in some elements
         headerDate.innerHTML = createDate()
 
-        //* put data in weather today box
-        weatherTodayDate.innerHTML = `<i class="bi bi-calendar2 me-1"></i>  ${createDate()}`
-
         //* put city name in value of search input
-        searchCityInput.value = check_get_UserInfo().city
+        if (check_get_UserInfo().city) {
+            searchCityInput.value = check_get_UserInfo().city
+        }
 
         //* start interval
         clock()

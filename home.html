@@ -132,7 +132,7 @@
                     <div class="main-header-search-bar d-flex align-items-center">
                         <div class="input-group search-group">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" placeholder="search your city" name="" id="search-city-input">
+                            <input type="text" class="form-control" placeholder="search your city" name="" spellcheck="false" id="search-city-input">
                         </div>
                         <button class="search-city-btn" id="search-city-btn">Find</button>
                     </div>
@@ -177,39 +177,22 @@
                     <!-- ! -------------------------- weather today box -------------------------- ! -->
                     <div class="weather-today-box p-0">
                         <div class="weather-today-box-inner">
-                            <div class="col-12 d-flex justify-content-between mt-4">
-                                <div class="weather-today-data d-flex flex-column justify-content-center">
-                                    <h4 class="weather-today-today text-capitalize">today</h4>
-                                    <h4 class="weather-today-day text-uppercase">Sunny</h4>
-                                    <h4 class="weather-today-temp text-uppercase d-flex">15 <div class="weather-data-C"></div> C</h4>
+                            <div class="weather-today-data d-flex flex-column justify-content-center">
+                                <h1 class="weather-today-today text-capitalize"> <!-- today --> </h1>
+                                <div class="weather-today-day-box d-flex align-items-center">
+                                    <h4 class="weather-today-day text-capitalize"> <!-- weather main -->  </h4>
+                                    <div class="weather-icon"></div>
                                 </div>
-                                <div class="weather-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="123.333" height="123.333" viewBox="0 0 123.333 123.333">
-                                        <defs>
-                                        <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
-                                            <stop offset="0" stop-color="#ffa000"/>
-                                            <stop offset="1" stop-color="#ece2cf"/>
-                                        </linearGradient>
-                                        </defs>
-                                        <g id="Icon_ionic-ios-sunny" data-name="Icon ionic-ios-sunny" transform="translate(-3.375 -3.375)">
-                                        <g id="Group_28" data-name="Group 28" transform="translate(3.375 3.375)">
-                                            <path id="Path_1312" data-name="Path 1312" d="M21.483,27.211a4.568,4.568,0,0,0-4.566,4.566v13.7a4.566,4.566,0,0,0,9.131,0v-13.7A4.568,4.568,0,0,0,21.483,27.211Z" transform="translate(40.184 73.294)" fill="url(#linear-gradient)"/>
-                                            <path id="Path_1313" data-name="Path 1313" d="M21.483,3.375a4.568,4.568,0,0,0-4.566,4.566v13.7a4.566,4.566,0,1,0,9.131,0V7.941A4.568,4.568,0,0,0,21.483,3.375Z" transform="translate(40.184 -3.375)" fill="url(#linear-gradient)"/>
-                                            <path id="Path_1314" data-name="Path 1314" d="M26.2,21.483a4.568,4.568,0,0,0-4.566-4.566H7.941a4.566,4.566,0,1,0,0,9.131h13.7A4.568,4.568,0,0,0,26.2,21.483Z" transform="translate(-3.375 40.184)" fill="url(#linear-gradient)"/>
-                                            <path id="Path_1315" data-name="Path 1315" d="M45.474,16.917h-13.7a4.566,4.566,0,1,0,0,9.131h13.7a4.566,4.566,0,0,0,0-9.131Z" transform="translate(73.294 40.184)" fill="url(#linear-gradient)"/>
-                                            <path id="Path_1316" data-name="Path 1316" d="M21.6,24.195a4.553,4.553,0,0,0-3.232,1.334L8.675,35.223a4.57,4.57,0,0,0,6.463,6.463l9.695-9.695a4.566,4.566,0,0,0-3.232-7.8Z" transform="translate(9.381 63.592)" fill="url(#linear-gradient)"/>
-                                            <path id="Path_1317" data-name="Path 1317" d="M28.76,26.167a4.553,4.553,0,0,0,3.232-1.334l9.695-9.695a4.57,4.57,0,0,0-6.463-6.463l-9.695,9.695a4.566,4.566,0,0,0,3.232,7.8Z" transform="translate(63.592 9.381)" fill="url(#linear-gradient)"/>
-                                            <path id="Path_1318" data-name="Path 1318" d="M15.138,8.675a4.57,4.57,0,0,0-6.463,6.463l9.695,9.695a4.57,4.57,0,0,0,6.463-6.463Z" transform="translate(9.381 9.381)" fill="url(#linear-gradient)"/>
-                                            <path id="Path_1319" data-name="Path 1319" d="M31.992,25.529a4.57,4.57,0,0,0-6.463,6.463l9.695,9.695a4.57,4.57,0,0,0,6.463-6.463Z" transform="translate(63.592 63.592)" fill="url(#linear-gradient)"/>
-                                        </g>
-                                        <path id="Path_1320" data-name="Path 1320" d="M39.712,11.25A28.462,28.462,0,1,0,68.173,39.712,28.507,28.507,0,0,0,39.712,11.25Z" transform="translate(25.33 25.33)" fill="url(#linear-gradient)"/>
-                                        </g>
-                                    </svg>
-                                </div>
+                                <h4 class="weather-today-like text-capitalize"> <!-- weather main desc --> </h4>
                             </div>
-                            <div class="mt-5 mb-4">
-                                <span class="weather-today-gps text-capitalize d-block"><!-- location of user --></span>
-                                <span class="weather-today-date text-capitalize d-block"><!-- date --></span>
+                            <div>
+                                <h5 class="weather-today-temp d-flex"> <!-- weather temp day --> </h5>
+                                <h5 class="weather-today-temp d-flex"> <!-- weather temp eve --> </h5>
+                                <h5 class="weather-today-temp d-flex"> <!-- weather temp night --> </h5>
+                            </div>
+                            <div class="mb-2">
+                                <span class="weather-today-gps text-capitalize d-block mb-2"> <!-- location of user --> </span>
+                                <span class="weather-today-date text-capitalize d-block"> <!-- date --> </span>
                             </div>
                         </div>
                         <!-- ! ---------------------------- calender btn ----------------------------- ! -->
