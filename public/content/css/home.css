@@ -178,7 +178,7 @@ body {
 .city-data-wrap {
     display: flex;
     justify-content: space-between;
-    column-gap: 50px;
+    column-gap: 80px;
 }
 .city-weather-week-wrap {
     width: 100%;
@@ -200,9 +200,6 @@ body {
     width: 100%;
     text-align: left;
 }
-.weather-week-headings h3:last-child {
-    text-align: center;
-}
 .weather-week {
     width: 100%;
     display: flex;
@@ -212,7 +209,6 @@ body {
 }
 .weather-week.active {
     background: var(--weather-box-gradient);
-    padding: 0 20px;
     border-radius: 8px;
 }
 .weather-week.active > * {
@@ -222,13 +218,6 @@ body {
     width: 100%;
     color: var(--light-green);
     font-size: 1.4rem;
-}
-.weather-week h3:last-child {
-    text-align: center;
-    font-size: 3rem;
-}
-.more-info-span {
-    cursor: pointer;
 }
 /* ! ---------------------------- weather today box --------------------------- ! */
 .weather-today-box {

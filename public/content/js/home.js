@@ -72,8 +72,7 @@ const createWeatherDataBox = (weatherResponse) => {
     `<h3 class="p-0 m-0"><img src="https://openweathermap.org/img/w/${weather_icon}.png"> ${day}</h3>
     <h3 class="p-0 m-0">${min_temp}°C</h3>
     <h3 class="p-0 m-0">${humidity}% <i class="bi bi-droplet"></i></h3>
-    <h3 class="p-0 m-0">${pressure}Pa</h3>
-    <h3 class="p-0 m-0"><span class="more-info-span"><i class="bi bi-three-dots"></i></span></h3>`
+    <h3 class="p-0 m-0">${pressure}Pa</h3>`
 
     //* create weather box
     const weather_box = document.createElement("div")
