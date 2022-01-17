@@ -102,6 +102,18 @@ body {
 /* ! ---------------------------------- main ---------------------------------- ! */
 .main {
     padding: 20px;
+    position: relative;
+}
+.main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 100%;
+    background: linear-gradient(to bottom, #3B5A52, #0C1210);
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+    z-index: -1;
 }
 /* ! ------------------------------- main header ------------------------------ ! */
 .main-header-title {
