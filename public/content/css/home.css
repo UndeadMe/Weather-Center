@@ -114,19 +114,21 @@ body {
     border: 1px solid var(--border-button);
     background: var(--dark-green) !important;
     margin-right: 20px;
-    width: 400px;
+    width: 500px;
     padding: 1px 5px;
 }
 .search-group span {
     background: none !important;
     color: var(--ice-white);
     border: none;
+    font-size: 1.3rem;
 }
 .search-group input {
     background: none !important;
     border: none;
     box-shadow: none !important;
-    height: 40px;
+    height: 45px;
+    font-size: 1.2rem;
     color: var(--ice-white) !important;
 }
 .search-group input::placeholder {
@@ -134,13 +136,14 @@ body {
     text-transform: capitalize;
 }
 .search-group + button {
-    padding: 5px 25px;
+    padding: 5px 30px;
     height: 45px;
     border: 1px solid var(--border-button);
     border-radius: 8px;
     font-size: 1.3rem;
-    background: var(--search-btn-gradient);
-    color: var(--ice-white);
+    /* background: var(--search-btn-gradient); */
+    background: var(--minimal-green);
+    color: var(--white);
     transition: 0.3s;
     box-shadow:  var(--search-btn-shadow);
 }
@@ -248,7 +251,7 @@ body {
     margin-left: 10px;
 }
 .weather-today-today {
-    color: var(--dark-green);
+    color: var(--ice-white);
     margin-left: -5px;
     font-size: 2rem;
 }
@@ -264,7 +267,6 @@ body {
     width: 100%;
     padding: 10px 0;
     border: none;
-    color: var(--ice-white);
     background: var(--calender-btn-gradient);
     color: var(--dark-black);
     font-weight: bolder;
