@@ -166,26 +166,6 @@ body {
 .city-section-title {
     color: var(--ice-white);
 }
-.show-cities-btn, .chart-btn {
-    border: 1px solid var(--border-button);
-    background: var(--button-gradient);
-    color: var(--ice-white);
-    fill: var(--ice-white);
-    font-size: 1.2rem;
-    height: 50px;
-}
-.show-cities-btn {
-    padding: 5px 30px;
-    border-radius: 10px;
-}
-.chart-btn {
-    width: 50px;
-    border-radius: 12px;
-    font-size: 1.5rem;
-}
-.show-cities-btn:active, .chart-btn:active {
-    box-shadow: var(--search-btn-active-shadow);
-}
 /* ! ------------------------------ weather week ------------------------------ ! */
 .city-data-wrap {
     display: flex;
@@ -222,6 +202,7 @@ body {
 .weather-week.active {
     background: var(--weather-box-gradient);
     border-radius: 8px;
+    padding-left: 10px;
 }
 .weather-week.active > * {
     color: var(--ice-white);
