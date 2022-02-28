@@ -29,8 +29,6 @@ const geolocationReq = () => {
             location.replace(`home.html`)
         })
         .catch(err => {
-            console.error(err.message)
-
             //* stop loading
             loading(false)
 

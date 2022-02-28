@@ -79,8 +79,6 @@ const createWeatherDataBox = (weatherResponse) => {
     weather_box.classList.add("weather-week")
     weather_box.insertAdjacentHTML("beforeend", children_element_of_weather_box)
 
-    // console.log(weather_box.children[0].appendChild)
-
     //* if weather reponse day === today , change the backgorund of this box
     if (day === today) {
         //* active today weather box
@@ -207,7 +205,6 @@ const getLatAndLonOfCity = (city) => {
             weatherWeekHeadings.style.display = "flex"
         })
         .catch(err => {
-            console.error(err.message)
             cityElem.innerHTML = ""
             createErorr(err.message)
             convertWeatherTodayBoxToError()
