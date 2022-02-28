@@ -14,7 +14,7 @@ const weatherTodayBoxInner = document.querySelector(".weather-today-box-inner")
 const check_get_UserInfo = () => {
     //* take geolocation from localStorage
     const Geolocation = JSON.parse(localStorage.getItem("Geolocation"))
-    
+
     //* check user's geolocation is init
     if (Geolocation) {
         return Geolocation
@@ -23,7 +23,7 @@ const check_get_UserInfo = () => {
 }
 
 //* upload weather boxes
-const uploadWeatherBoxInDom = ( weatherResponseObject ) => {
+const uploadWeatherBoxInDom = (weatherResponseObject) => {
     wrap.innerHTML = ""
     const Fragment = new DocumentFragment()
 
@@ -33,7 +33,7 @@ const uploadWeatherBoxInDom = ( weatherResponseObject ) => {
             //* call to (createWeatherDataBox) to make weather boxes
             Fragment.appendChild(createWeatherDataBox(dayObject))
     })
-    
+
     //* append Fragment That is full of the weather boxes
     wrap.appendChild(Fragment)
 }
@@ -42,11 +42,11 @@ const uploadWeatherBoxInDom = ( weatherResponseObject ) => {
 const makeRequest = (url, err = '') => {
     //* return a response in a promise
     return fetch(url)
-            .then(res => {
-                if (!res.ok) throw new Error(err)
-                //* return response
-                return res.json() 
-            })
+        .then(res => {
+            if (!res.ok) throw new Error(err)
+            //* return response
+            return res.json()
+        })
 }
 
 //* request to one call api
@@ -69,7 +69,7 @@ const createWeatherDataBox = (weatherResponse) => {
     const today = createDate().split(",")[0]
 
     const children_element_of_weather_box =
-    `<h3 class="p-0 m-0"><img src="https://openweathermap.org/img/w/${weather_icon}.png"> ${day}</h3>
+        `<h3 class="p-0 m-0"><img src="https://openweathermap.org/img/w/${weather_icon}.png"> ${day}</h3>
     <h3 class="p-0 m-0">${min_temp}°C</h3>
     <h3 class="p-0 m-0">${humidity}% <i class="bi bi-droplet"></i></h3>
     <h3 class="p-0 m-0">${pressure}Pa</h3>`
@@ -78,13 +78,13 @@ const createWeatherDataBox = (weatherResponse) => {
     const weather_box = document.createElement("div")
     weather_box.classList.add("weather-week")
     weather_box.insertAdjacentHTML("beforeend", children_element_of_weather_box)
-    
+
     // console.log(weather_box.children[0].appendChild)
 
     //* if weather reponse day === today , change the backgorund of this box
-    if (day === today) { 
+    if (day === today) {
         //* active today weather box
-        weather_box.classList.add("active") 
+        weather_box.classList.add("active")
         //* create today weather box and save data in dom
         createTodayWeatherDataBox(weatherResponse)
     }
@@ -130,10 +130,10 @@ const convertWeatherTodayBoxToError = () => {
 
 //* create date
 const createDate = () => {
-    const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
     const nowDate = new Date()
-    const yearNumber  = nowDate.getFullYear()
+    const yearNumber = nowDate.getFullYear()
     const monthName = monthNames[nowDate.getMonth()]
     const dayName = createDayName(nowDate.getDay())
     let dayNumber = nowDate.getDate()
@@ -165,7 +165,7 @@ const clock = () => {
         let minut = nowTime.getMinutes()
 
         if (minut.toString().trim().length === 1) minut = `0${minut}`
-        
+
         hour >= 12 && hour <= 24 ? time = `${hour}:${minut} PM` : time = `${hour}:${minut} AM`
 
         headerTime.innerHTML = time
@@ -176,7 +176,7 @@ const clock = () => {
 const getLatAndLonOfCity = (city) => {
     //* active loading
     loading(true)
-    
+
     //* geocode api setting for get lat and long of city
     const API_KEY = "pk.5717d3458249d3af26201b6e2442aa88"
     const Accept_Language = "en"
@@ -199,7 +199,7 @@ const getLatAndLonOfCity = (city) => {
             //* upload weather boxes in dom by lat and longt that we get them
             uploadWeatherBoxInDom(res)
             weatherTodayBoxInner.classList.remove("error")
-            
+
             //* put country and city name in dom
             cityElem.innerHTML = `<i class="bi bi-geo-alt-fill"></i> ${res_address}`
             weatherTodayGps.innerHTML = `<i class="bi bi-geo-alt-fill"></i> ${res_address}`

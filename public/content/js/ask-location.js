@@ -6,7 +6,7 @@ const gpsMsg = document.querySelector(".gps-msg")
 const geolocationReq = () => {
     getPosition()
         .then(res => {
-            const { latitude: latt, longitude:longt } = res
+            const { latitude: latt, longitude: longt } = res
             return fetch(`https://us1.locationiq.com/v1/reverse.php?key=pk.5717d3458249d3af26201b6e2442aa88&lat=${latt}&lon=${longt}&format=json&accept-language=en`)
         })
         .then(res => res.json())
@@ -30,10 +30,10 @@ const geolocationReq = () => {
         })
         .catch(err => {
             console.error(err.message)
-            
+
             //* stop loading
             loading(false)
-            
+
             //* render error
             renderErr(`${err.message} <br> couldn't get access`)
         })
@@ -52,13 +52,13 @@ const renderErr = (err) => {
 
 //* get position of user
 const getPosition = () => {
-    return new Promise((res , rej) => {
+    return new Promise((res, rej) => {
         //* get geolocation
         navigator.geolocation.getCurrentPosition(
             //* success 
             position => {
                 res(position.coords)
-            }, 
+            },
             //* error
             err => {
                 rej(new Error("problem getting your geolocation of city"))
@@ -68,9 +68,7 @@ const getPosition = () => {
 }
 
 //* save datas in localStorage
-const saveInLocalStorage = (object) => {
-    localStorage.setItem("Geolocation", JSON.stringify(object))
-}
+const saveInLocalStorage = (object) => localStorage.setItem("Geolocation", JSON.stringify(object))
 
 //* events handlers
 locationBtn.addEventListener("click", () => {
