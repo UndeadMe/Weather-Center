@@ -253,6 +253,9 @@ const createUserAddress = (address) => {
 }
 
 searchCityBtn.addEventListener("click", () => getLatAndLonOfCity(searchCityInput.value))
+searchCityInput.addEventListener("keyup", (e) => {
+    if (e.key === "Enter" ) getLatAndLonOfCity(e.target.value)
+})
 
 window.addEventListener("load", () => {
     //* get city from local storage
