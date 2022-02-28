@@ -1,7 +1,7 @@
 # Weather-Center ⛅
 it's kind of weather app but it has some features. I desided to develope this kind of weather app for make myself better. I wanted to learn APIs and after this [Pixel-World](https://github.com/Banana021s/Pixel-World) I started this new project for challenging myself. I hope this project attract your attention. let me explain all works that I did in this project.
 
-## Approach of Weather Center
+## Approach of Weather Center ⚙
 when you open the home page you think you should see this page but I check one parameter: <br>
  - this page needs to takes access your `location` and shows weahter of your area so this page needs to your `Geolocation` and you have to give access. if you gave access, you can open home page all of the time otherwise you redirect to `ask-location` page to take your access.
  
@@ -20,4 +20,23 @@ this error is because of your connection, we recommand use a `vpn` for solve thi
 
 ## home page
 ![Screenshot 2022-02-28 144202](https://user-images.githubusercontent.com/89915857/155973653-a1389418-b0fa-40ad-867a-2660411f3250.png)
+welcome to the home page. this is where that you can search `any` places, areas, countries, streets and etc then then you can see all weather datas are collecting for you.
 
+# Features
+ - beautiful design
+ - powerful search 🗺 you can search `anything` like:
+   - streets 
+   - countries
+   - squares
+   - historic places like Colosseum 
+   - etc everywhere you wnat 
+ - show today date and clock ⏱
+ - show some weather datas like :
+   - Min Temp 
+   - Humidity 
+   - Pressure 
+ # future featues
+ - [ ] create a calender
+ - [ ] change between seasons themes like between Winter theme or spring theme 
+ - [ ] add chart for show weather datas
+ - [ ] add Cities section to add cities you like to check weather
