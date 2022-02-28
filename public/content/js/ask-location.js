@@ -26,7 +26,7 @@ const geolocationReq = () => {
             saveInLocalStorage(user_info)
 
             //* go to the home page and send the geo info
-            location.replace(`home.html`)
+            location.assign(`home.html`)
         })
         .catch(err => {
             //* stop loading
